@@ -1,0 +1,61 @@
+/* Title.module.css */
+.title {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+    background-color: #f4f4f4;
+  }
+  
+  .title_box {
+    text-align: start;
+    width: 100%;
+    max-width: 1200px;
+    padding: 20px;
+    background-color: #ffffff;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
+  }
+  
+  .title_box h2 {
+    font-size: 2em; /* Larger font size for the heading */
+    color: #333;
+    margin-bottom: 10px;
+  }
+  
+  .title_box p {
+    font-size: 1.2em;
+    color: #666;
+    line-height: 1.6;
+  }
+  
+  /* Responsive adjustments */
+  @media (max-width: 768px) {
+    .title_box {
+      padding: 15px; /* Slightly reduce padding */
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05); /* Lighter shadow */
+    }
+  
+    .title_box h2 {
+      font-size: 1.5em; /* Reduce the font size for smaller screens */
+    }
+  
+    .title_box p {
+      font-size: 1em; /* Adjust paragraph font size for better readability */
+    }
+  }
+  
+  @media (max-width: 480px) {
+    .title_box {
+      padding: 10px; /* Even smaller padding for very small screens */
+    }
+  
+    .title_box h2 {
+      font-size: 1.2em; /* Further reduce the font size for very small screens */
+    }
+  
+    .title_box p {
+      font-size: 0.9em; /* Smaller paragraph text for compact screens */
+    }
+  }
+  
