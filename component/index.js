@@ -8,6 +8,9 @@ import Title from "./Title/Title";
 import Category from "./Category/Category";
 import Filter from "./Filter/Filter";
 import NFTCard from "./NFTCardComponent/NFTCard";
+import Collection from "./Collection/Collection";
+import Follower from "./Follower/Follower";
+import AudioPlayer from "./AudioPlayer/Audio";
 
 export {
   Button,
@@ -20,4 +23,7 @@ export {
   Category,
   Filter,
   NFTCard,
+  Collection,
+  Follower,
+  AudioPlayer,
 };

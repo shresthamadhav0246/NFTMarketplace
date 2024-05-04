@@ -1,0 +1,82 @@
+/* InteractiveFeatures.module.css */
+.featuresContainer {
+  padding: 20px;
+  background-color: #f8f9fa;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  margin-top: 20px;
+}
+
+.featuresTitle {
+  color: #333;
+  font-size: 22px;
+  margin-bottom: 15px;
+}
+
+.commentsSection, .shareSection, .chatSection {
+  margin-bottom: 20px;
+}
+
+.commentsList, .shareList, .chatBox {
+  background-color: #ffffff;
+  padding: 15px;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+.comment {
+  padding: 10px;
+  border-bottom: 1px solid #eee;
+}
+
+.comment:last-child {
+  border-bottom: none;
+}
+
+.commentText, .commentUser {
+  margin: 5px 0;
+}
+
+.shareList {
+  list-style: none;
+  padding: 0;
+}
+
+.shareItem {
+  margin-bottom: 5px;
+}
+
+.shareLink {
+  color: #007bff;
+  text-decoration: none;
+}
+
+.shareLink:hover {
+  text-decoration: underline;
+}
+
+.chatInput {
+  padding: 10px;
+  margin-right: 10px;
+  width: calc(100% - 120px); /* Adjust width based on button width */
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+.sendButton {
+  padding: 10px 20px;
+  background-color: #4CAF50;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.sendButton:hover {
+  background-color: #45a049;
+}
+
+.commentsSection_title,
+.chatSection_title {
+  padding: 10px;
+}

@@ -10,8 +10,19 @@ import {
 } from "react-icons/ti";
 import styles from "./Footer.module.css"; // Make sure to create and import Footer.module.css
 import Image from "next/image";
+import { useRouter } from "next/router";
 
 const Footer = () => {
+  const router = useRouter(); // Import useRouter from next/router
+
+  // Define routes that don't require a footer
+  const noFooterRoutes = ["/collection", "/admin"];
+
+  // Check if the current path is in the list of routes that don't show the footer
+  if (noFooterRoutes.includes(router.pathname)) {
+    return null;
+  }
+
   return (
     <footer className={styles.footer}>
       <div className={styles.footerSection}>

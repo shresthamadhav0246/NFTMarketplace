@@ -79,4 +79,11 @@
     font-size: 0.85em;
     color: #bdc3c7;
   }
+
+  @media screen and (max-width: 35em){
+    .profile{
+      left: -15rem;
+    }
+    
+  }
   

@@ -5,7 +5,7 @@ import Style from "./Discover.module.css";
 
 const Discover = () => {
   const discovers = [
-    { name: "Art Collection", link: "/art-collection" },
+    { name: "Art Collection", link: "/collection" },
     { name: "Exclusive Drops", link: "/exclusive-drops" },
     { name: "Virtual Realities", link: "/virtual-realities" },
   ];

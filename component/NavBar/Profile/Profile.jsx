@@ -34,14 +34,14 @@ const Profile = () => {
           <div className={styles.profile_menu_one_item}>
             <FaUserAlt />
             <p>
-              <Link href={{ pathname: "/myprofile" }}>My Profile</Link>
+              <Link href={{ pathname: "/profile" }}>My Profile</Link>
             </p>
           </div>
 
           <div className={styles.profile_menu_one_item}>
             <FaRegImage />
             <p>
-              <Link href={{ pathname: "/myprofile" }}>My Items</Link>
+              <Link href={{ pathname: "/profile" }}>My Items</Link>
             </p>
           </div>
 

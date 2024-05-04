@@ -41,3 +41,26 @@
     text-align: center; /* Center text if no notifications */
   }
   
+  /* Responsive Design */
+@media screen and (max-width: 35em) {
+  .container {
+
+      left: -13rem;
+      top: 2rem;
+ 
+  
+  }
+
+  .list {
+      max-height: calc(100vh - 20px); /* Full height minus padding */
+  }
+
+  .item {
+      padding-bottom: 5px; /* Less padding in a constrained space */
+  }
+
+  .message,
+  .timestamp {
+      font-size: 1em; /* Bigger font size for better readability on small screens */
+  }
+}
