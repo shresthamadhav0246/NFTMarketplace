@@ -1,32 +1,41 @@
 // pages/ProfilePage.js
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import UserProfile from "../profile/UserProfile/UserProfile";
 import OwnedNFTs from "../profile/OwnedNFTs/OwnedNFTs";
 // import { getUserData, getOwnedNFTs } from "../utils/api";
 import user from "../img/user-1.png";
 import img from "../img/collection-img3.jpg";
 import { ProfileBar } from "@/profile";
+import { useRouter } from "next/router";
+import NFTMarketplaceContext from "@/context/NFTMarketplace";
+import { getUser } from "@/utils/api";
+import AddProfile from "@/profile/AddProfile/AddProfile";
 
 function ProfilePage() {
-  //   const [userData, setUserData] = useState({});
-  //   const [ownedNFTs, setOwnedNFTs] = useState([]);
+  const { currentAccount } = useContext(NFTMarketplaceContext);
 
-  //   useEffect(() => {
-  //     getUserData().then((data) => setUserData(data));
-  //     getOwnedNFTs().then((data) => setOwnedNFTs(data));
-  //   }, []);
+  const [user, setUser] = useState(null);
+  const router = useRouter();
 
-  const userData = {
-    name: "Jane Doe",
-    email: "jane.doe@example.com",
-    profileImage: user,
-    isVerified: true,
-    bio: "Digital Artist & NFT Enthusiast",
-    twitter: "https://twitter.com/janedoe",
-    facebook: "https://facebook.com/janedoe",
-    instagram: "https://instagram.com/janedoe",
-    linkedin: "https://linkedin.com/in/janedoe",
-  };
+  useEffect(() => {
+    const fetchUserProfile = async () => {
+      try {
+        const response = await getUser(currentAccount);
+
+        setUser(response);
+      } catch (error) {
+        console.error("Error fetching user profile:", error);
+      }
+    };
+
+    if (currentAccount) {
+      fetchUserProfile();
+    }
+  }, [currentAccount]);
+
+  // if (!user) {
+  //   return <div>Loading...</div>;
+  // }
 
   const ownedNFTs = [
     {
@@ -100,9 +109,14 @@ function ProfilePage() {
     setFollowingNFTs(nfts.filter((nft) => nft.id !== id));
   };
 
+  // console.log(user);
+  // const isProfileComplete =
+  //   user.username && user.email && user.bio && user.profileImage;
+
   return (
     <div className="profile-page">
-      <UserProfile user={userData} />
+      <UserProfile user={user} />
+
       <ProfileBar
         ownedNFTs={ownedNFTs}
         createdNFTs={createdNFTs}

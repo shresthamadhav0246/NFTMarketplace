@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import {
   RiUserFollowFill,
   RiUserUnfollowFill,
@@ -7,145 +7,87 @@ import {
 import styles from "./Follower.module.css";
 import FollowerTabCard from "./FollowerTabCard/FollowerTabCard";
 
-import img1 from "../../img/collection-img1.jpg";
-import img2 from "../../img/collection-img2.jpg";
-import img3 from "../../img/collection-img3.jpg";
-import img4 from "../../img/collection-img4.jpg";
+import {
+  getTotalLikes,
+  unfollowNFT,
+  getFollowedNFTs,
+  followNFT,
+} from "@/utils/api";
+import NFTMarketplaceContext from "@/context/NFTMarketplace";
 
-const Follower = () => {
-  const dummyData = {
-    popular: [
-      {
-        id: 1,
-        imageUrl: img1,
-        title: "Abstract Art #1",
-        price: "0.3",
-        creatorName: "Alice",
-        isFollowing: true,
-      },
-      {
-        id: 2,
-        imageUrl: img2,
-        title: "Landscape #5",
-        price: "0.5",
-        creatorName: "Bob",
-        isFollowing: false,
-      },
-      {
-        id: 3,
-        imageUrl: img1,
-        title: "Digital Avatar",
-        price: "1.2",
-        creatorName: "Carol",
-        isFollowing: false,
-      },
-      {
-        id: 4,
-        imageUrl: img4,
-        title: "Virtual World",
-        price: "0.8",
-        creatorName: "Dave",
-        isFollowing: true,
-      },
-      {
-        id: 5,
-        imageUrl: img3,
-        title: "Sculpture Series",
-        price: "0.45",
-        creatorName: "Eve",
-        isFollowing: true,
-      },
-      {
-        id: 6,
-        imageUrl: img3,
-        title: "Mystic Animals",
-        price: "1.1",
-        creatorName: "Fay",
-        isFollowing: false,
-      },
-    ],
-    following: [
-      {
-        id: 1,
-        imageUrl: img1,
-        title: "Space Odyssey",
-        price: "2.3",
-        creatorName: "Gina",
-        isFollowing: true,
-      },
-      {
-        id: 2,
-        imageUrl: img4,
-        title: "Ocean Depths",
-        price: "0.9",
-        creatorName: "Harry",
-        isFollowing: true,
-      },
-      {
-        id: 3,
-        imageUrl: img2,
-        title: "Modern Abstract",
-        price: "1.5",
-        creatorName: "Ivy",
-        isFollowing: true,
-      },
-      {
-        id: 4,
-        imageUrl: img4,
-        title: "Digital Graffiti",
-        price: "0.7",
-        creatorName: "John",
-        isFollowing: true,
-      },
-    ],
-    news: [
-      {
-        id: 1,
-        imageUrl: img1,
-        title: "Cyberpunk City",
-        price: "3.0",
-        creatorName: "Kara",
-        isFollowing: false,
-      },
-      {
-        id: 2,
-        imageUrl: img2,
-        title: "Robotics Art",
-        price: "2.5",
-        creatorName: "Leo",
-        isFollowing: false,
-      },
-      {
-        id: 3,
-        imageUrl: img4,
-        title: "Future Tech",
-        price: "4.1",
-        creatorName: "Mia",
-        isFollowing: false,
-      },
-      {
-        id: 4,
-        imageUrl: img1,
-        title: "Alien Landscape",
-        price: "1.9",
-        creatorName: "Nick",
-        isFollowing: false,
-      },
-      {
-        id: 5,
-        imageUrl: img3,
-        title: "Dystopian Visions",
-        price: "1.3",
-        creatorName: "Olivia",
-        isFollowing: false,
-      },
-    ],
+const Follower = ({ nfts }) => {
+  const [tab, setTab] = useState("popular");
+  const [popularNFTs, setPopularNFTs] = useState([]);
+  const [followingNFTs, setFollowingNFTs] = useState([]);
+  const [newsNFTs, setNewsNFTs] = useState([]);
+
+  const { currentAccount } = useContext(NFTMarketplaceContext);
+
+  useEffect(() => {
+    const getData = async () => {
+      const likes = await fetchAllLikes(nfts);
+      const follows = await getFollowedNFTs(currentAccount);
+
+      categorizeNFTs(nfts, likes, follows);
+    };
+    getData();
+  }, [currentAccount, nfts]);
+
+  const fetchAllLikes = async (nfts) => {
+    const likes = await Promise.all(
+      nfts.map(async (nft) => {
+        const totalLikes = await getTotalLikes(nft.itemId);
+        return { tokenId: nft.itemId, totalLikes };
+      })
+    );
+    return likes;
   };
 
-  const [tab, setTab] = useState("popular");
-  const popularArray = [1, 2, 3, 4, 5, 6];
-  const followingArray = [1, 2, 3, 4];
-  const newsArray = [1, 2, 3, 4, 5];
+  const categorizeNFTs = (nfts, likes, follows) => {
+    const likesMap = new Map();
+    likes.forEach((like) => {
+      likesMap.set(like.tokenId, like.totalLikes);
+    });
+
+    const followsSet = new Set(follows.map((follow) => follow.tokenId));
+    console.log("Follower", followsSet);
+    const nftsWithCounts = nfts.map((nft) => ({
+      ...nft,
+      likesCount: likesMap.get(nft.itemId) || 0,
+      isFollowed: followsSet.has(nft.itemId.toString()),
+    }));
+
+    const popular = [...nftsWithCounts].sort(
+      (a, b) => b.likesCount - a.likesCount
+    ); // Most liked
+    const following = nftsWithCounts.filter((nft) => nft.isFollowed); // NFTs from followed users
+    const news = nftsWithCounts.slice(0, 5); // Latest NFTs
+
+    setPopularNFTs(popular);
+    setFollowingNFTs(following);
+    setNewsNFTs(news);
+  };
+
+  const handleFollow = async (nft) => {
+    const originalFollowStatus = nft.isFollowed;
+
+    try {
+      if (nft.isFollowed) {
+        await unfollowNFT(currentAccount, nft.itemId);
+        nft.isFollowed = false;
+      } else {
+        await followNFT(currentAccount, nft.itemId);
+        nft.isFollowed = true;
+      }
+
+      // After the follow/unfollow operation, we need to update the follow status
+      const updatedFollows = await getFollowedNFTs(currentAccount);
+      categorizeNFTs(nfts, [], updatedFollows);
+    } catch (error) {
+      console.error("Error following/unfollowing NFT:", error);
+      nft.isFollowed = originalFollowStatus; // Revert on failure
+    }
+  };
 
   return (
     <div className={styles.follower}>
@@ -172,9 +114,30 @@ const Follower = () => {
         </button>
       </div>
       <div className={styles.content}>
-        {dummyData[tab].map((item) => (
-          <FollowerTabCard key={item.id} nft={item} />
-        ))}
+        {tab === "popular" &&
+          popularNFTs.map((nft) => (
+            <FollowerTabCard
+              key={nft.itemId}
+              nft={nft}
+              onFollow={() => handleFollow(nft)}
+            />
+          ))}
+        {tab === "following" &&
+          followingNFTs.map((nft) => (
+            <FollowerTabCard
+              key={nft.itemId}
+              nft={nft}
+              onFollow={() => handleFollow(nft)}
+            />
+          ))}
+        {tab === "news" &&
+          newsNFTs.map((nft) => (
+            <FollowerTabCard
+              key={nft.itemId}
+              nft={nft}
+              onFollow={() => handleFollow(nft)}
+            />
+          ))}
       </div>
     </div>
   );

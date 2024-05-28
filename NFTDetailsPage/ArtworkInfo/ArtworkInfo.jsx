@@ -6,9 +6,9 @@ const ArtworkInfo = ({ title, artist, description, edition, creationDate }) => {
     <div className={styles.infoContainer}>
       <h1 className={styles.title}>{title}</h1>
       <p className={styles.artist}>Artist: {artist}</p>
-      <p className={styles.description}>Description: {description}</p>
-      <p className={styles.edition}>Edition: {edition}</p>
-      <p className={styles.creationDate}>Creation Date: {creationDate}</p>
+
+      <p className={styles.edition}>Edition: 2</p>
+      {/* <p className={styles.creationDate}>Creation Date: {creationDate}</p> */}
       {/* Additional artwork information */}
     </div>
   );

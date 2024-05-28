@@ -1,6 +1,13 @@
 import { Footer, NavBar } from "@/component";
+import { NFTMarketplaceProvider } from "@/context/NFTMarketplace";
+
 import "@/styles/globals.css";
 import { useRouter } from "next/router";
+
+export const metadata = {
+  title: "NFTMarketplace",
+  description: "null",
+};
 
 function App({ Component, pageProps }) {
   const router = useRouter();
@@ -9,11 +16,11 @@ function App({ Component, pageProps }) {
   const showFooter = !noFooterRoutes.includes(router.pathname);
 
   return (
-    <div>
+    <NFTMarketplaceProvider>
       <NavBar />
       <Component {...pageProps} />
       {showFooter && <Footer />}
-    </div>
+    </NFTMarketplaceProvider>
   );
 }
 

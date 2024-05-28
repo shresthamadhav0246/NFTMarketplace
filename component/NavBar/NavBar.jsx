@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import logo from "../../img/logo1.png";
@@ -12,12 +12,17 @@ import { CgMenuLeft, CgMenuRight } from "react-icons/cg";
 import Style from "./NavBar.module.css";
 import { Discover, HelpCenter, Notification, Profile, SideBar } from "./index";
 
+import NFTMarketplaceContext from "@/context/NFTMarketplace";
+
 const NavBar = () => {
   const [discover, setDiscover] = useState(false);
   const [help, setHelp] = useState(false);
   const [notification, setNotification] = useState(false);
   const [profile, setProfile] = useState(false);
   const [openSideMenu, setOpenSideMenu] = useState(false);
+
+  // NFT smart contract section
+  const { currentAccount, connectWallet } = useContext(NFTMarketplaceContext);
 
   const openMenu = (e) => {
     const btnText = e.target.innerText;
@@ -90,12 +95,14 @@ const NavBar = () => {
       <div className={Style.navbar_container}>
         <div className={Style.navbar_container_left}>
           <div className={Style.logo}>
-            <Image
-              src={logo}
-              alt="NFT Marketplace Logo"
-              wight={70}
-              height={70}
-            />
+            <Link href={{ pathname: "/" }}>
+              <Image
+                src={logo}
+                alt="NFT Marketplace Logo"
+                wight={70}
+                height={70}
+              />
+            </Link>
           </div>
           <div className={Style.navbar_container_left_box_input}>
             <div className={Style.navbar_container_left_box_input_box}>
@@ -143,9 +150,21 @@ const NavBar = () => {
             {notification && <Notification />}
           </div>
 
-          <div className={Style.navbar_container_right_button}>
-            <Button btnName="Create" />
-          </div>
+          {currentAccount == null ? (
+            <div className={Style.navbar_container_right_button}>
+              <Button
+                btnName="Connect Wallet"
+                handleClick={() => connectWallet()}
+              />
+            </div>
+          ) : (
+            <div className={Style.navbar_container_right_button}>
+              <Link href={{ pathname: "/NFT-upload" }}>
+                {" "}
+                <Button btnName="Create" />
+              </Link>
+            </div>
+          )}
 
           <div className={Style.navbar_container_right_profile_box}>
             <div className={Style.navbar_container_right_profile}>
@@ -157,7 +176,7 @@ const NavBar = () => {
                 onClick={() => openProfile()}
                 className={Style.navbar_container_right_profile}
               />
-              {profile && <Profile />}
+              {profile && <Profile currentAccount={currentAccount} />}
             </div>
           </div>
 

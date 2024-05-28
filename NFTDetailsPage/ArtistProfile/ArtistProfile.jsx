@@ -1,19 +1,20 @@
 import React from "react";
 import styles from "./ArtistProfile.module.css";
 
-const ArtistProfile = ({ name, bio, portfolioLink, socialLinks }) => {
+const ArtistProfile = ({ name, bio, email }) => {
   return (
     <div className={styles.profileContainer}>
       <h2 className={styles.profileTitle}>Artist Profile</h2>
       <p className={styles.profileDetails}>Name: {name}</p>
+      <p className={styles.profileDetails}>Email: {email}</p>
       <p className={styles.profileDetails}>Bio: {bio}</p>
-      <p className={styles.profileDetails}>
+      {/* <p className={styles.profileDetails}>
         Portfolio:{" "}
         <a href={portfolioLink} className={styles.profileLink}>
           {portfolioLink}
         </a>
-      </p>
-      <div className={styles.profileSocialLinks}>
+      </p> */}
+      {/* <div className={styles.profileSocialLinks}>
         <p>Social Media:</p>
         <ul>
           {socialLinks.map((link, index) => (
@@ -27,7 +28,7 @@ const ArtistProfile = ({ name, bio, portfolioLink, socialLinks }) => {
             </li>
           ))}
         </ul>
-      </div>
+      </div> */}
       {/* Additional artist information */}
     </div>
   );

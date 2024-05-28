@@ -1,82 +1,73 @@
-/* InteractiveFeatures.module.css */
 .featuresContainer {
-  padding: 20px;
-  background-color: #f8f9fa;
-  border-radius: 8px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  margin-top: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
 }
 
-.featuresTitle {
-  color: #333;
-  font-size: 22px;
-  margin-bottom: 15px;
-}
-
-.commentsSection, .shareSection, .chatSection {
-  margin-bottom: 20px;
-}
-
-.commentsList, .shareList, .chatBox {
-  background-color: #ffffff;
-  padding: 15px;
-  border-radius: 8px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
-}
-
-.comment {
-  padding: 10px;
-  border-bottom: 1px solid #eee;
-}
-
-.comment:last-child {
-  border-bottom: none;
-}
-
-.commentText, .commentUser {
-  margin: 5px 0;
+.shareSection {
+  /* Your existing styles */
 }
 
 .shareList {
-  list-style: none;
+  list-style-type: none;
   padding: 0;
 }
 
 .shareItem {
-  margin-bottom: 5px;
+  margin: 5px 0;
 }
 
 .shareLink {
-  color: #007bff;
   text-decoration: none;
+  color: #1da1f2;
 }
 
-.shareLink:hover {
-  text-decoration: underline;
+.chatSection {
+  border: 1px solid #ddd;
+  padding: 10px;
+  border-radius: 4px;
+  max-width: 800px;
+}
+
+.chatSection_title {
+  margin: 0 0 10px;
+}
+
+.chatBox {
+  display: flex;
+  flex-direction: column;
+}
+
+.chatMessages {
+  border: 1px solid #ddd;
+  padding: 10px;
+  height: 200px;
+  overflow-y: auto;
+  margin-bottom: 10px;
+  border-radius: 4px;
+}
+
+.chatMessage {
+  padding: 5px;
+  border-bottom: 1px solid #f1f1f1;
 }
 
 .chatInput {
   padding: 10px;
-  margin-right: 10px;
-  width: calc(100% - 120px); /* Adjust width based on button width */
-  border: 1px solid #ccc;
-  border-radius: 5px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  margin-bottom: 10px;
 }
 
 .sendButton {
-  padding: 10px 20px;
-  background-color: #4CAF50;
-  color: white;
+  padding: 10px;
   border: none;
-  border-radius: 5px;
+  background-color: #007bff;
+  color: white;
+  border-radius: 4px;
   cursor: pointer;
 }
 
 .sendButton:hover {
-  background-color: #45a049;
-}
-
-.commentsSection_title,
-.chatSection_title {
-  padding: 10px;
+  background-color: #0056b3;
 }

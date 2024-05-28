@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext } from "react";
 import {
   ArtworkDisplay,
   ArtworkInfo,
@@ -7,41 +7,49 @@ import {
   InteractiveFeatures,
   RelatedNFTs,
 } from "./index";
+import NFTMarketplaceContext from "@/context/NFTMarketplace";
 
 import styles from "./NFTDetails.module.css";
 
-const NFTDetails = ({ nft }) => {
+const NFTDetails = ({ nft, artistDetails }) => {
+  const artistSocialLinks = ["Facebook", "Twitter, Instragram"];
+  const comments = ["It is good product", "I like it"];
+  const shareOptions = ["It is good product", "I like it"];
+  const { currentAccount } = useContext(NFTMarketplaceContext);
+
   return (
     <div className={styles.nftDetailsContainer}>
       <div className={styles.leftColumn}>
-        <ArtworkDisplay imageUrl={nft.imageUrl} altText={nft.title} />
+        <ArtworkDisplay imageUrl={nft.image} altText={nft.name} />
         <p className={styles.artworkDescription}>{nft.description}</p>
       </div>
       <div className={styles.rightColumn}>
         <ArtworkInfo
-          title={nft.title}
-          artist={nft.artist}
+          title={nft.name}
+          artist={nft.seller}
           edition={nft.edition}
           creationDate={nft.creationDate}
         />
         <ArtistProfile
-          name={nft.artistName}
-          bio={nft.artistBio}
-          portfolioLink={nft.artistPortfolioLink}
-          socialLinks={nft.artistSocialLinks}
+          name={artistDetails.username || "No Username"}
+          email={artistDetails.email || "NO Email"}
+          bio={artistDetails.bio || "No Bio"}
+          // portfolioLink={nft.artistPortfolioLink}
+          // socialLinks={artistSocialLinks}
         />
         <PriceAndAvailability
           price={nft.price}
           availability={nft.availability}
         />
         <InteractiveFeatures
-          comments={nft.comments}
-          shareOptions={nft.shareOptions}
+          shareOptions={shareOptions}
+          tokenId={nft.itemId}
+          walletAddress={currentAccount}
         />
       </div>
-      <div className={styles.relatedNFTsContainer}>
+      {/* <div className={styles.relatedNFTsContainer}>
         <RelatedNFTs relatedNFTs={nft.relatedNFTs} />
-      </div>
+      </div> */}
     </div>
   );
 };

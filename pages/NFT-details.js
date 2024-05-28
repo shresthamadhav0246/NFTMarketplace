@@ -1,48 +1,84 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import styles from "../styles/NFTDetails.module.css";
 import NFTDetailsComponent from "@/NFTDetailsPage/NFTDetails";
 import img from "../img/collection-img3.jpg";
+import { useRouter } from "next/router";
+import { getUser } from "@/utils/api";
 const NFTDetails = () => {
-  const nftData = {
-    imageUrl: img,
-    title: "Unique Digital Art",
-    artist: "Artist Name",
-    description: "Detailed description of the NFT artwork...",
-    edition: "1 of 10",
-    creationDate: "2021-09-01",
-    artistName: "Artist Name",
-    artistBio: "Brief biography of the artist...",
-    artistPortfolioLink: "https://artistportfolio.com",
-    artistSocialLinks: [
-      {
-        twitter: "https://twitter.com/artist",
-        instagram: "https://instagram.com/artist",
-      },
-    ],
-    price: "3 ETH",
-    availability: "Available",
-    comments: [
-      { username: "user1", comment: "This is amazing!" },
-      { username: "User 2", comment: "Great product" },
-    ],
-    shareOptions: [{ twitter: true, facebook: true }],
-    relatedNFTs: [
-      {
-        id: 1,
-        title: "Related Art #1",
-        imageUrl: img,
-      },
-      {
-        id: 2,
-        title: "Related Art #2",
-        imageUrl: img,
-      },
-    ],
-  };
+  const router = useRouter();
+  const { id, data } = router.query;
+  const [nft, setNft] = useState("");
+  const [artistDetails, setArtistDetails] = useState("");
+
+  useEffect(() => {
+    if (data) {
+      const nftData = JSON.parse(decodeURIComponent(data));
+      setNft(nftData);
+    }
+  }, [data]);
+
+  useEffect(() => {
+    const fetchArtistDetails = async () => {
+      try {
+        const response = await getUser(nft.seller.toLowerCase());
+
+        setArtistDetails(response);
+      } catch (error) {
+        console.error("Error fetching user profile:", error);
+      }
+    };
+
+    if (nft.seller) {
+      fetchArtistDetails();
+    }
+  }, [nft.seller]);
+
+  console.log(artistDetails);
+
+  if (!nft) {
+    return <div>Loading...</div>;
+  }
+
+  // const nftData = {
+  //   imageUrl: img,
+  //   title: "Unique Digital Art",
+  //   artist: "Artist Name",
+  //   description: "Detailed description of the NFT artwork...",
+  //   edition: "1 of 10",
+  //   creationDate: "2021-09-01",
+  //   artistName: "Artist Name",
+  //   artistBio: "Brief biography of the artist...",
+  //   artistPortfolioLink: "https://artistportfolio.com",
+  //   artistSocialLinks: [
+  //     {
+  //       twitter: "https://twitter.com/artist",
+  //       instagram: "https://instagram.com/artist",
+  //     },
+  //   ],
+  //   price: "3 ETH",
+  //   availability: "Available",
+  //   comments: [
+  //     { username: "user1", comment: "This is amazing!" },
+  //     { username: "User 2", comment: "Great product" },
+  //   ],
+  //   shareOptions: [{ twitter: true, facebook: true }],
+  //   relatedNFTs: [
+  //     {
+  //       id: 1,
+  //       title: "Related Art #1",
+  //       imageUrl: img,
+  //     },
+  //     {
+  //       id: 2,
+  //       title: "Related Art #2",
+  //       imageUrl: img,
+  //     },
+  //   ],
+  // };
 
   return (
     <div>
-      <NFTDetailsComponent nft={nftData} />
+      <NFTDetailsComponent nft={nft} artistDetails={artistDetails} />
     </div>
   );
 };

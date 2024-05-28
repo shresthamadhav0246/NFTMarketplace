@@ -6,7 +6,7 @@ const PriceAndAvailability = ({ price, availability }) => {
     <div className={styles.priceContainer}>
       <h2 className={styles.title}>Price & Availability</h2>
       <p className={styles.price}>Price: {price}</p>
-      <p className={styles.availability}>Availability: {availability}</p>
+      {/* <p className={styles.availability}>Availability: {availability}</p> */}
       <div className={styles.actions}>
         <button className={styles.buyButton}>Buy Now</button>
         <button className={styles.cartButton}>Add to Cart</button>

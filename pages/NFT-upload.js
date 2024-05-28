@@ -1,5 +1,7 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
+import { useRouter } from "next/router";
 import styles from "../styles/NFTUpload.module.css"; // Ensure correct path
+import NFTMarketplaceContext from "@/context/NFTMarketplace"; // Ensure correct path to context
 
 const NFTUploadPage = () => {
   const [title, setTitle] = useState("");
@@ -14,6 +16,9 @@ const NFTUploadPage = () => {
   const [availability, setAvailability] = useState("");
   const [termsAccepted, setTermsAccepted] = useState(false);
   const [errors, setErrors] = useState({});
+
+  const { createNFT } = useContext(NFTMarketplaceContext);
+  const router = useRouter();
 
   const validateInput = () => {
     const errors = {};
@@ -32,8 +37,20 @@ const NFTUploadPage = () => {
     return Object.keys(errors).length === 0;
   };
 
-  const handleUpload = () => {
-    // Implement upload logic here
+  const handleUpload = async () => {
+    try {
+      const formInput = {
+        name: title,
+        description,
+        price,
+        category,
+        tags,
+        editionSize,
+      };
+      await createNFT(formInput, artworkFile, router);
+    } catch (error) {
+      console.error("Error uploading NFT:", error);
+    }
   };
 
   const handleFileChange = (e) => {
@@ -48,7 +65,6 @@ const NFTUploadPage = () => {
     e.preventDefault();
     const isValid = validateInput();
     if (isValid) {
-      // Upload the NFT
       handleUpload();
     }
   };
@@ -57,145 +73,170 @@ const NFTUploadPage = () => {
     <div className={styles.uploadContainer}>
       <h1 className={styles.header}>Upload NFT</h1>
       <form onSubmit={handleSubmit} className={styles.form}>
-        <div className={styles.formGroup}>
-          <label>Title</label>
-          <input
-            type="text"
-            value={title}
-            onChange={(e) => setTitle(e.target.value)}
-            className={`${styles.input} ${errors.title ? styles.error : ""}`}
-          />
-          {errors.title && (
-            <p className={styles.errorMessage}>{errors.title}</p>
-          )}
+        <div className={styles.column}>
+          <div className={styles.step}>
+            <h2>Step 1: Upload Artwork</h2>
+            <div className={styles.formGroup}>
+              <label>Artwork File</label>
+              <div className={styles.dragDropArea}>
+                <input
+                  type="file"
+                  onChange={handleFileChange}
+                  className={styles.inputFile}
+                />
+                <p>Drag & drop your file here, or click to select</p>
+              </div>
+              {previewUrl && (
+                <img
+                  src={previewUrl}
+                  alt="Artwork Preview"
+                  className={styles.previewImage}
+                />
+              )}
+              {errors.artworkFile && (
+                <p className={styles.errorMessage}>{errors.artworkFile}</p>
+              )}
+            </div>
+          </div>
         </div>
-        <div className={styles.formGroup}>
-          <label>Description</label>
-          <textarea
-            value={description}
-            onChange={(e) => setDescription(e.target.value)}
-            className={`${styles.textarea} ${
-              errors.description ? styles.error : ""
-            }`}
-          />
-          {errors.description && (
-            <p className={styles.errorMessage}>{errors.description}</p>
-          )}
-        </div>
-        <div className={styles.formGroup}>
-          <label>Artwork File</label>
-          <input
-            type="file"
-            onChange={handleFileChange}
-            className={`${styles.inputFile} ${
-              errors.artworkFile ? styles.error : ""
-            }`}
-          />
-          {previewUrl && (
-            <img
-              src={previewUrl}
-              alt="Artwork Preview"
-              className={styles.previewImage}
-            />
-          )}
-          {errors.artworkFile && (
-            <p className={styles.errorMessage}>{errors.artworkFile}</p>
-          )}
-        </div>
-        <div className={styles.formGroup}>
-          <label>Category</label>
-          <input
-            type="text"
-            value={category}
-            onChange={(e) => setCategory(e.target.value)}
-            className={`${styles.input} ${errors.category ? styles.error : ""}`}
-          />
-          {errors.category && (
-            <p className={styles.errorMessage}>{errors.category}</p>
-          )}
-        </div>
-        <div className={styles.formGroup}>
-          <label>Tags</label>
-          <input
-            type="text"
-            value={tags}
-            onChange={(e) => setTags(e.target.value)}
-            className={`${styles.input} ${errors.tags ? styles.error : ""}`}
-          />
-          {errors.tags && <p className={styles.errorMessage}>{errors.tags}</p>}
-        </div>
-        <div className={styles.formGroup}>
-          <label>Edition Size</label>
-          <input
-            type="number"
-            value={editionSize}
-            onChange={(e) => setEditionSize(e.target.value)}
-            className={`${styles.input} ${
-              errors.editionSize ? styles.error : ""
-            }`}
-          />
-          {errors.editionSize && (
-            <p className={styles.errorMessage}>{errors.editionSize}</p>
-          )}
-        </div>
-        <div className={styles.formGroup}>
-          <label>Royalty Percentage (%)</label>
-          <input
-            type="number"
-            value={royaltyPercentage}
-            onChange={(e) => setRoyaltyPercentage(e.target.value)}
-            className={`${styles.input} ${
-              errors.royaltyPercentage ? styles.error : ""
-            }`}
-          />
-          {errors.royaltyPercentage && (
-            <p className={styles.errorMessage}>{errors.royaltyPercentage}</p>
-          )}
-        </div>
-        <div className={styles.formGroup}>
-          <label>Price</label>
-          <input
-            type="number"
-            value={price}
-            onChange={(e) => setPrice(e.target.value)}
-            className={`${styles.input} ${errors.price ? styles.error : ""}`}
-          />
-          {errors.price && (
-            <p className={styles.errorMessage}>{errors.price}</p>
-          )}
-        </div>
-        <div className={styles.formGroup}>
-          <label>Availability</label>
-          <input
-            type="text"
-            value={availability}
-            onChange={(e) => setAvailability(e.target.value)}
-            className={`${styles.input} ${
-              errors.availability ? styles.error : ""
-            }`}
-          />
-          {errors.availability && (
-            <p className={styles.errorMessage}>{errors.availability}</p>
-          )}
-        </div>
-        <div className={styles.checkboxContainer}>
-          <input
-            type="checkbox"
-            checked={termsAccepted}
-            onChange={(e) => setTermsAccepted(e.target.checked)}
-            className={`${styles.checkbox} ${
-              errors.termsAccepted ? styles.error : ""
-            }`}
-          />
-          <label>Accept Terms and Conditions {"  "}</label>
 
-          {errors.termsAccepted && (
-            <p className={styles.errorMessage}>{errors.termsAccepted}</p>
-          )}
+        <div className={styles.column}>
+          <div className={styles.step}>
+            <h2>Step 2: Enter Details</h2>
+            <div className={styles.formGroup}>
+              <label>Title</label>
+              <input
+                type="text"
+                value={title}
+                onChange={(e) => setTitle(e.target.value)}
+                className={`${styles.input} ${
+                  errors.title ? styles.error : ""
+                }`}
+              />
+              {errors.title && (
+                <p className={styles.errorMessage}>{errors.title}</p>
+              )}
+            </div>
+            <div className={styles.formGroup}>
+              <label>Description</label>
+              <textarea
+                value={description}
+                onChange={(e) => setDescription(e.target.value)}
+                className={`${styles.textarea} ${
+                  errors.description ? styles.error : ""
+                }`}
+              />
+              {errors.description && (
+                <p className={styles.errorMessage}>{errors.description}</p>
+              )}
+            </div>
+            <div className={styles.formGroup}>
+              <label>Category</label>
+              <input
+                type="text"
+                value={category}
+                onChange={(e) => setCategory(e.target.value)}
+                className={`${styles.input} ${
+                  errors.category ? styles.error : ""
+                }`}
+              />
+              {errors.category && (
+                <p className={styles.errorMessage}>{errors.category}</p>
+              )}
+            </div>
+            <div className={styles.formGroup}>
+              <label>Tags</label>
+              <input
+                type="text"
+                value={tags}
+                onChange={(e) => setTags(e.target.value)}
+                className={`${styles.input} ${errors.tags ? styles.error : ""}`}
+              />
+              {errors.tags && (
+                <p className={styles.errorMessage}>{errors.tags}</p>
+              )}
+            </div>
+            <div className={styles.formGroup}>
+              <label>Edition Size</label>
+              <input
+                type="number"
+                value={editionSize}
+                onChange={(e) => setEditionSize(e.target.value)}
+                className={`${styles.input} ${
+                  errors.editionSize ? styles.error : ""
+                }`}
+              />
+              {errors.editionSize && (
+                <p className={styles.errorMessage}>{errors.editionSize}</p>
+              )}
+            </div>
+            <div className={styles.formGroup}>
+              <label>Royalty Percentage (%)</label>
+              <input
+                type="number"
+                value={royaltyPercentage}
+                onChange={(e) => setRoyaltyPercentage(e.target.value)}
+                className={`${styles.input} ${
+                  errors.royaltyPercentage ? styles.error : ""
+                }`}
+              />
+              {errors.royaltyPercentage && (
+                <p className={styles.errorMessage}>
+                  {errors.royaltyPercentage}
+                </p>
+              )}
+            </div>
+            <div className={styles.formGroup}>
+              <label>Price</label>
+              <input
+                type="number"
+                value={price}
+                onChange={(e) => setPrice(e.target.value)}
+                className={`${styles.input} ${
+                  errors.price ? styles.error : ""
+                }`}
+              />
+              {errors.price && (
+                <p className={styles.errorMessage}>{errors.price}</p>
+              )}
+            </div>
+            <div className={styles.formGroup}>
+              <label>Availability</label>
+              <input
+                type="text"
+                value={availability}
+                onChange={(e) => setAvailability(e.target.value)}
+                className={`${styles.input} ${
+                  errors.availability ? styles.error : ""
+                }`}
+              />
+              {errors.availability && (
+                <p className={styles.errorMessage}>{errors.availability}</p>
+              )}
+            </div>
+          </div>
         </div>
-        <button type="submit" className={styles.submitButton}>
-          Upload
-        </button>
+
+        <div className={styles.fullWidthStep}>
+          <h2>Step 3: Confirm and Upload</h2>
+          <div className={styles.checkboxContainer}>
+            <input
+              type="checkbox"
+              checked={termsAccepted}
+              onChange={(e) => setTermsAccepted(e.target.checked)}
+              className={`${styles.checkbox} ${
+                errors.termsAccepted ? styles.error : ""
+              }`}
+            />
+            <label>Accept Terms and Conditions {"  "}</label>
+            {errors.termsAccepted && (
+              <p className={styles.errorMessage}>{errors.termsAccepted}</p>
+            )}
+          </div>
+          <button type="submit" className={styles.submitButton}>
+            Upload
+          </button>
+        </div>
       </form>
     </div>
   );

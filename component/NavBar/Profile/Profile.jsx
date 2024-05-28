@@ -8,9 +8,12 @@ import Link from "next/link";
 import styles from "./Profile.module.css";
 import user1 from "../../../img/user-1.png";
 
-const Profile = () => {
+const Profile = ({ currentAccount }) => {
   const userName = "Madhab Shrestha";
-  const userAddress = "X02354...2324";
+  const userAddress = `${currentAccount.slice(0, 7)}....${currentAccount.slice(
+    -5
+  )}`;
+
   return (
     <div className={styles.profile}>
       <div className={styles.profile_account}>
