@@ -1,6 +1,7 @@
 // frontend/utils/api.js
 
-const API_URL = "https://nft-marketplace-backend-inky.vercel.app/api";
+const API_URL =
+  "https://backend-5nhphh1bg-madhab-shresthas-projects.vercel.app/api";
 
 // User APIs
 export const createUser = async (userData) => {
