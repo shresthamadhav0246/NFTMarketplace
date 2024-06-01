@@ -4,6 +4,7 @@ import styles from "./OwnedNFTs.module.css";
 import Image from "next/image";
 
 const OwnedNFTs = ({ nfts }) => {
+  console.log(nfts);
   if (!nfts.length) {
     return <div className={styles.empty}>No NFTs owned yet.</div>;
   }
@@ -20,7 +21,7 @@ const OwnedNFTs = ({ nfts }) => {
             className={styles.nftImage}
           />
           <div className={styles.nftDetails}>
-            <h3 className={styles.nftTitle}>{nft.title}</h3>
+            <h3 className={styles.nftTitle}>{nft.name}</h3>
             <p className={styles.nftPrice}>{`Price: ${nft.price} ETH`}</p>
           </div>
         </div>

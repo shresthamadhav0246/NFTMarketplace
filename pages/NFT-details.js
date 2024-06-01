@@ -1,14 +1,17 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import styles from "../styles/NFTDetails.module.css";
 import NFTDetailsComponent from "@/NFTDetailsPage/NFTDetails";
 import img from "../img/collection-img3.jpg";
 import { useRouter } from "next/router";
 import { getUser } from "@/utils/api";
+import NFTMarketplaceContext from "@/context/NFTMarketplace";
+
 const NFTDetails = () => {
   const router = useRouter();
   const { id, data } = router.query;
   const [nft, setNft] = useState("");
   const [artistDetails, setArtistDetails] = useState("");
+  const { buyNFT } = useContext(NFTMarketplaceContext);
 
   useEffect(() => {
     if (data) {
@@ -78,7 +81,11 @@ const NFTDetails = () => {
 
   return (
     <div>
-      <NFTDetailsComponent nft={nft} artistDetails={artistDetails} />
+      <NFTDetailsComponent
+        nft={nft}
+        artistDetails={artistDetails}
+        buyNFT={buyNFT}
+      />
     </div>
   );
 };

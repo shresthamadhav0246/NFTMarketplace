@@ -4,6 +4,7 @@ import styles from "./CreatedNFTs.module.css"; // Ensure the CSS file is appropr
 import Image from "next/image";
 
 const CreatedNFTs = ({ nfts }) => {
+  console.log(nfts);
   if (!nfts.length) {
     return <div className={styles.empty}>No NFTs created yet.</div>;
   }
@@ -20,12 +21,10 @@ const CreatedNFTs = ({ nfts }) => {
             className={styles.nftImage}
           />
           <div className={styles.nftDetails}>
-            <h3 className={styles.nftTitle}>{nft.title}</h3>
+            <h3 className={styles.nftTitle}>{nft.name}</h3>
             <p className={styles.nftPrice}>{`Price: ${nft.price} ETH`}</p>
-            <p
-              className={styles.nftExtra}
-            >{`Created on: ${nft.creationDate}`}</p>{" "}
-            // Additional info example
+            <p className={styles.nftExtra}>{`Created on: }`}</p> // Additional
+            info example
           </div>
         </div>
       ))}

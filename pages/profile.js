@@ -12,10 +12,29 @@ import { getUser } from "@/utils/api";
 import AddProfile from "@/profile/AddProfile/AddProfile";
 
 function ProfilePage() {
-  const { currentAccount } = useContext(NFTMarketplaceContext);
+  const { currentAccount, fetchMyNFTs, fetchMyNFT, fetchItemsListed } =
+    useContext(NFTMarketplaceContext);
+  const [ownedNFTs, setOwnedNFTs] = useState([]);
+  const [createdNFTs, setCreatedNFTs] = useState([]);
 
   const [user, setUser] = useState(null);
   const router = useRouter();
+
+  useEffect(() => {
+    fetchMyNFTs("listed").then((items) => {
+      console.log("Owned NFTs fetched:", items);
+      setOwnedNFTs(items);
+    });
+  }, []);
+
+  useEffect(() => {
+    fetchMyNFTs("created").then((items) => {
+      console.log("Created NFTs fetched:", items);
+      setCreatedNFTs(items);
+    });
+  }, []);
+
+  console.log("Owned NFTs" + ownedNFTs);
 
   useEffect(() => {
     const fetchUserProfile = async () => {
@@ -37,43 +56,43 @@ function ProfilePage() {
   //   return <div>Loading...</div>;
   // }
 
-  const ownedNFTs = [
-    {
-      id: 1,
-      title: "Abstract Art #202",
-      price: "0.8",
-      image: img,
-    },
-    {
-      id: 2,
-      title: "Digital Landscape #119",
-      price: "1.2",
-      image: img,
-    },
-    {
-      id: 3,
-      title: "Virtual Reality Scene #12",
-      price: "0.5",
-      image: img,
-    },
-    {
-      id: 4,
-      title: "Cyberpunk Cityscape #401",
-      price: "2.5",
-      image: img,
-    },
-  ];
+  // const ownedNFTs = [
+  //   {
+  //     id: 1,
+  //     title: "Abstract Art #202",
+  //     price: "0.8",
+  //     image: img,
+  //   },
+  //   {
+  //     id: 2,
+  //     title: "Digital Landscape #119",
+  //     price: "1.2",
+  //     image: img,
+  //   },
+  //   {
+  //     id: 3,
+  //     title: "Virtual Reality Scene #12",
+  //     price: "0.5",
+  //     image: img,
+  //   },
+  //   {
+  //     id: 4,
+  //     title: "Cyberpunk Cityscape #401",
+  //     price: "2.5",
+  //     image: img,
+  //   },
+  // ];
 
-  const createdNFTs = [
-    {
-      id: 1,
-      title: "NFT Art #1",
-      price: "0.5",
-      image: img,
-      creationDate: "2022-01-01",
-    },
-    // more NFTs
-  ];
+  // const createdNFTs = [
+  //   {
+  //     id: 1,
+  //     title: "NFT Art #1",
+  //     price: "0.5",
+  //     image: img,
+  //     creationDate: "2022-01-01",
+  //   },
+  //   // more NFTs
+  // ];
 
   const [likedNFTs, setNfts] = useState([
     {

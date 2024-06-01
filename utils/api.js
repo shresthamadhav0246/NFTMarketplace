@@ -1,68 +1,66 @@
-// frontend/utils/api.js
+import axios from "axios";
 
 const API_URL =
-  "https://backend-5nhphh1bg-madhab-shresthas-projects.vercel.app/api";
+  "https://backend-jgwh3x2q9-madhab-shresthas-projects.vercel.app/api";
 
 // User APIs
 export const createUser = async (userData) => {
-  const response = await fetch(`${API_URL}/users/user`, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify(userData),
-  });
-  return response.json();
+  try {
+    const response = await axios.post(`${API_URL}/users/user`, userData);
+    return response.data;
+  } catch (error) {
+    console.error("Error:", error);
+    throw error;
+  }
 };
 
 export const getUser = async (walletAddress) => {
-  const response = await fetch(`${API_URL}/users/${walletAddress}`);
-  return response.json();
+  try {
+    const response = await axios.get(`${API_URL}/users/${walletAddress}`);
+    return response.data;
+  } catch (error) {
+    console.error("Error:", error);
+    throw error;
+  }
 };
 
 // NFT APIs
 export const createNFT = async (nftData) => {
-  const response = await fetch(`${API_URL}/nfts`, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify(nftData),
-  });
-  return response.json();
+  try {
+    const response = await axios.post(`${API_URL}/nfts`, nftData);
+    return response.data;
+  } catch (error) {
+    console.error("Error:", error);
+    throw error;
+  }
 };
 
 export const getNFT = async (id) => {
-  const response = await fetch(`${API_URL}/nfts/${id}`);
-  return response.json();
+  try {
+    const response = await axios.get(`${API_URL}/nfts/${id}`);
+    return response.data;
+  } catch (error) {
+    console.error("Error:", error);
+    throw error;
+  }
 };
 
 // Like APIs
 export const likeNFT = async (likeData) => {
-  const response = await fetch(`${API_URL}/likes`, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify(likeData),
-  });
-  return response.json();
+  try {
+    const response = await axios.post(`${API_URL}/likes`, likeData);
+    return response.data;
+  } catch (error) {
+    console.error("Error:", error);
+    throw error;
+  }
 };
 
 // Function to get total likes for a specific NFT
 export const getTotalLikes = async (tokenId) => {
   try {
-    const response = await fetch(`${API_URL}/likes/${tokenId}/total`, {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-      },
-    });
-    if (!response.ok) {
-      throw new Error("Failed to fetch total likes");
-    }
-    const data = await response.json();
-    return data.totalLikes;
+    const response = await axios.get(`${API_URL}/likes/${tokenId}/total`);
+    return response.data.totalLikes;
   } catch (error) {
     console.error("Error:", error);
     throw error;
@@ -71,41 +69,24 @@ export const getTotalLikes = async (tokenId) => {
 
 export const followNFT = async (followerAddress, tokenId) => {
   try {
-    console.log("API Call: followNFT", { followerAddress, tokenId });
-    const response = await fetch(`${API_URL}/follows/follow`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ followerAddress, tokenId }),
+    const response = await axios.post(`${API_URL}/follows/follow`, {
+      followerAddress,
+      tokenId,
     });
-
-    if (!response.ok) {
-      throw new Error(`Failed to follow NFT: ${response.statusText}`);
-    }
-
-    const data = await response.json();
-    return data;
+    return response.data;
   } catch (error) {
-    console.error("Error in followNFT:", error);
+    console.error("Error:", error);
     throw error;
   }
 };
 
 export const unfollowNFT = async (followerAddress, tokenId) => {
   try {
-    const response = await fetch(`${API_URL}/follows/unfollow`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ followerAddress, tokenId }),
+    const response = await axios.post(`${API_URL}/follows/unfollow`, {
+      followerAddress,
+      tokenId,
     });
-    if (!response.ok) {
-      throw new Error("Failed to unfollow NFT");
-    }
-    const data = await response.json();
-    return data;
+    return response.data;
   } catch (error) {
     console.error("Error:", error);
     throw error;
@@ -115,20 +96,10 @@ export const unfollowNFT = async (followerAddress, tokenId) => {
 // Function to get followed NFTs for a specific user
 export const getFollowedNFTs = async (followerAddress) => {
   try {
-    const response = await fetch(
-      `${API_URL}/follows/follow/${followerAddress}`,
-      {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-        },
-      }
+    const response = await axios.get(
+      `${API_URL}/follows/follow/${followerAddress}`
     );
-    if (!response.ok) {
-      throw new Error("Failed to fetch followed NFTs");
-    }
-    const data = await response.json();
-    return data;
+    return response.data;
   } catch (error) {
     console.error("Error:", error);
     throw error;
@@ -137,17 +108,24 @@ export const getFollowedNFTs = async (followerAddress) => {
 
 // Chat APIs
 export const createChatMessage = async (tokenId, chatData) => {
-  const response = await fetch(`${API_URL}/chats/chat/${tokenId}`, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify(chatData),
-  });
-  return response.json();
+  try {
+    const response = await axios.post(
+      `${API_URL}/chats/chat/${tokenId}`,
+      chatData
+    );
+    return response.data;
+  } catch (error) {
+    console.error("Error:", error);
+    throw error;
+  }
 };
 
 export const getChatMessages = async (tokenId) => {
-  const response = await fetch(`${API_URL}/chats/chat/${tokenId}`);
-  return response.json();
+  try {
+    const response = await axios.get(`${API_URL}/chats/chat/${tokenId}`);
+    return response.data;
+  } catch (error) {
+    console.error("Error:", error);
+    throw error;
+  }
 };

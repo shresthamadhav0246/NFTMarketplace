@@ -11,7 +11,7 @@ import NFTMarketplaceContext from "@/context/NFTMarketplace";
 
 import styles from "./NFTDetails.module.css";
 
-const NFTDetails = ({ nft, artistDetails }) => {
+const NFTDetails = ({ nft, artistDetails, buyNFT }) => {
   const artistSocialLinks = ["Facebook", "Twitter, Instragram"];
   const comments = ["It is good product", "I like it"];
   const shareOptions = ["It is good product", "I like it"];
@@ -38,8 +38,11 @@ const NFTDetails = ({ nft, artistDetails }) => {
           // socialLinks={artistSocialLinks}
         />
         <PriceAndAvailability
+          nft={nft}
           price={nft.price}
           availability={nft.availability}
+          buyNFT={buyNFT}
+          currentAccount={currentAccount}
         />
         <InteractiveFeatures
           shareOptions={shareOptions}

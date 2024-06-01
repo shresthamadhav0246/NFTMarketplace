@@ -1,9 +1,9 @@
 import React, { createContext, useEffect, useState } from "react";
-import { ethers } from "ethers";
+import { BigNumber, ethers } from "ethers";
 import Web3Modal from "web3modal";
 import axios from "axios";
 import { NFTMarketplaceAddress, NFTMarketplaceABI } from "./constant";
-import Router from "next/router";
+import Router, { useRouter } from "next/router";
 
 export const NFTMarketplaceContext = createContext();
 
@@ -31,6 +31,8 @@ export const NFTMarketplaceProvider = ({ children }) => {
   const [currentAccount, setCurrentAccount] = useState(null);
   const [openError, setOpenError] = useState(false);
   const [error, setError] = useState("");
+
+  const router = useRouter();
 
   const checkContract = async () => {
     try {
@@ -186,10 +188,10 @@ export const NFTMarketplaceProvider = ({ children }) => {
       console.log(contract);
       const listingPrice = await contract.getListingPrice();
       const transaction = !isReselling
-        ? await contract.mintToken(url, price, {
+        ? await contract.createToken(url, price, {
             value: listingPrice.toString(),
           })
-        : await contract.reSellMarketItem(url, price, {
+        : await contract.resellToken(url, price, {
             value: listingPrice,
           });
 
@@ -250,12 +252,14 @@ export const NFTMarketplaceProvider = ({ children }) => {
       const contract = fetchContract(provider);
       let data;
 
-      if (type === "created") {
+      if (type == "created") {
         // Fetch NFTs created by the user
         data = await contract.fetchItemsListed();
-      } else if (type === "listed") {
+        console.log("Created NFTs" + data);
+      } else if (type == "listed") {
         // Fetch NFTs listed by the user
         data = await contract.fetchMyNFTs();
+        console.log("listed NFTs" + data);
       } else {
         throw new Error("Invalid type specified. Use 'created' or 'listed'.");
       }
@@ -293,21 +297,45 @@ export const NFTMarketplaceProvider = ({ children }) => {
     }
   };
 
-  // BUY NFTs FUNCTION
+  useEffect(() => {
+    fetchMyNFTs();
+  }, []);
+
   const buyNFT = async (nft) => {
     try {
+      console.log("nft:", nft); // Log the entire nft object
+
+      // Validate NFT price existence (optional)
+      if (!nft.price) {
+        throw new Error("NFT is missing a valid price property");
+      }
+
       const contract = await connectingWithSmartContract();
-      const price = ethers.utils.parseUnits(nft.price.toString(), "ether");
+
+      // Convert price to BigNumber with error handling
+      const priceUnit = "ether"; // Replace with your desired unit if needed
+
+      // const price = ethers.utils.parseUnits(nft.price, priceUnit);
+      // console.log("Parsed Price:", price);
+
+      // Convert the price to the smallest unit (wei)
+      const priceInWei = ethers.utils.parseEther(nft.price);
 
       // Execute the purchase
-      const transaction = await contract.createMarketSale(nft.tokenId, {
-        value: price,
+      const transaction = await contract.createMarketSale(nft.itemId, {
+        value: priceInWei,
       });
 
       await transaction.wait();
       console.log("Transaction successful", transaction);
+      router.push("/profile");
     } catch (error) {
-      console.error("Error buying NFT:", error);
+      // Catch specific errors for better debugging
+      if (error.error?.message) {
+        console.error("Transaction error:", error.error.message);
+      } else {
+        console.error("Error buying NFT:", error);
+      }
     }
   };
 

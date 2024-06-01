@@ -13,7 +13,6 @@ import {
   Footer,
 } from "../component/index";
 import NFTMarketplaceContext from "@/context/NFTMarketplace"; // Ensure correct path
-import NFT from "@/component/NFTCardComponent/NFT";
 
 export default function Home() {
   const { fetchNFTs, checkIfWalletConnected } = useContext(
@@ -41,6 +40,10 @@ export default function Home() {
     loadNFTs();
   }, [fetchNFTs]);
 
+  const handleFollow = () => {
+    console.log("Follow button is clicked.");
+  };
+
   return (
     <>
       <Head>
@@ -48,17 +51,21 @@ export default function Home() {
       </Head>
       <HeroSection />
       <ServiceSection />
-      <Title
-        heading="Filter by Collection"
-        paragraph="Discover the most outstanding NFTs in all topics of life"
-      />
-      <Follower nfts={nfts} />
-      <Collection />
+
       <Title
         heading="Featured NFTs"
         paragraph="Discover the most outstanding NFTs in all topics of life"
       />
       <Filter />
+
+      <NFTCard nfts={nfts} />
+
+      <Title
+        heading="Filter by Collection"
+        paragraph="Discover the most outstanding NFTs in all topics of life"
+      />
+      {/* <Follower nfts={nfts} /> */}
+      <Collection />
 
       <Title
         heading="Browse by category"
@@ -66,6 +73,29 @@ export default function Home() {
       />
       <Category />
       <Subscribe />
+
+      {/* <div>
+        <h2>Owned NFTs</h2>
+        {ownedNFTs.map((nft) => (
+          <div key={nft.itemId}>
+            <img src={nft.image} alt={nft.name} />
+            <p>{nft.name}</p>
+            <p>{nft.description}</p>
+            <p>Price: {nft.price} ETH</p>
+          </div>
+        ))}
+      </div>
+      <div>
+        <h2>Created NFTs</h2>
+        {createdNFTs.map((nft) => (
+          <div key={nft.itemId}>
+            <img src={nft.image} alt={nft.name} />
+            <p>{nft.name}</p>
+            <p>{nft.description}</p>
+            <p>Price: {nft.price} ETH</p>
+          </div>
+        ))}
+      </div> */}
     </>
   );
 }
