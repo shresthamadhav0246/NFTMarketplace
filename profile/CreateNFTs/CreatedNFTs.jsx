@@ -3,8 +3,7 @@ import React from "react";
 import styles from "./CreatedNFTs.module.css"; // Ensure the CSS file is appropriately named or reused
 import Image from "next/image";
 
-const CreatedNFTs = ({ nfts }) => {
-  console.log(nfts);
+const CreatedNFTs = ({ nfts = [] }) => {
   if (!nfts.length) {
     return <div className={styles.empty}>No NFTs created yet.</div>;
   }

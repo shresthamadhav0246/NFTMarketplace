@@ -6,10 +6,9 @@ import { TbDownloadOff, TbDownload } from "react-icons/tb"; // Corrected here
 import Link from "next/link";
 
 import styles from "./Profile.module.css";
-import user1 from "../../../img/user-1.png";
+import user1 from "../../../img/user-icon.png";
 
-const Profile = ({ currentAccount }) => {
-  const userName = "Madhab Shrestha";
+const Profile = ({ currentAccount, user }) => {
   const userAddress = `${currentAccount.slice(0, 7)}....${currentAccount.slice(
     -5
   )}`;
@@ -18,14 +17,19 @@ const Profile = ({ currentAccount }) => {
     <div className={styles.profile}>
       <div className={styles.profile_account}>
         <Image
-          src={user1}
+          src={user == null ? user1 : user.profilePicture}
           alt="User Profile"
           width={50}
           height={50}
           className={styles.profile_account_img}
         />
         <div className={styles.profile_account_info}>
-          <p className={styles.profile_account_name}>{userName}</p>
+          {user && (
+            <p className={styles.profile_account_name}>
+              {user.userName || " "}
+            </p>
+          )}
+
           <small className={styles.profile_account_address}>
             {userAddress}
           </small>

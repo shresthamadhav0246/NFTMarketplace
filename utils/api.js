@@ -1,12 +1,18 @@
 import axios from "axios";
 
-const API_URL =
-  "https://backend-jgwh3x2q9-madhab-shresthas-projects.vercel.app/api";
+const API_URL = "https://nft-market-backend-5a9716c6a442.herokuapp.com/api";
 
-// User APIs
+// Axios instance with default configuration
+const axiosInstance = axios.create({
+  baseURL: API_URL,
+  headers: {
+    "Content-Type": "application/json",
+  },
+});
+
 export const createUser = async (userData) => {
   try {
-    const response = await axios.post(`${API_URL}/users/user`, userData);
+    const response = await axiosInstance.post("/users/user", userData);
     return response.data;
   } catch (error) {
     console.error("Error:", error);
@@ -16,7 +22,8 @@ export const createUser = async (userData) => {
 
 export const getUser = async (walletAddress) => {
   try {
-    const response = await axios.get(`${API_URL}/users/${walletAddress}`);
+    const response = await axiosInstance.get(`/users/${walletAddress}`);
+    console.log("Functiona called");
     return response.data;
   } catch (error) {
     console.error("Error:", error);
@@ -27,7 +34,7 @@ export const getUser = async (walletAddress) => {
 // NFT APIs
 export const createNFT = async (nftData) => {
   try {
-    const response = await axios.post(`${API_URL}/nfts`, nftData);
+    const response = await axiosInstance.post("/nfts", nftData);
     return response.data;
   } catch (error) {
     console.error("Error:", error);
@@ -37,7 +44,7 @@ export const createNFT = async (nftData) => {
 
 export const getNFT = async (id) => {
   try {
-    const response = await axios.get(`${API_URL}/nfts/${id}`);
+    const response = await axiosInstance.get(`/nfts/${id}`);
     return response.data;
   } catch (error) {
     console.error("Error:", error);
@@ -48,7 +55,7 @@ export const getNFT = async (id) => {
 // Like APIs
 export const likeNFT = async (likeData) => {
   try {
-    const response = await axios.post(`${API_URL}/likes`, likeData);
+    const response = await axiosInstance.post("/likes", likeData);
     return response.data;
   } catch (error) {
     console.error("Error:", error);
@@ -59,7 +66,7 @@ export const likeNFT = async (likeData) => {
 // Function to get total likes for a specific NFT
 export const getTotalLikes = async (tokenId) => {
   try {
-    const response = await axios.get(`${API_URL}/likes/${tokenId}/total`);
+    const response = await axiosInstance.get(`/likes/${tokenId}/total`, {});
     return response.data.totalLikes;
   } catch (error) {
     console.error("Error:", error);
@@ -69,7 +76,7 @@ export const getTotalLikes = async (tokenId) => {
 
 export const followNFT = async (followerAddress, tokenId) => {
   try {
-    const response = await axios.post(`${API_URL}/follows/follow`, {
+    const response = await axiosInstance.post("/follows/follow", {
       followerAddress,
       tokenId,
     });
@@ -82,7 +89,7 @@ export const followNFT = async (followerAddress, tokenId) => {
 
 export const unfollowNFT = async (followerAddress, tokenId) => {
   try {
-    const response = await axios.post(`${API_URL}/follows/unfollow`, {
+    const response = await axiosInstance.post("/follows/unfollow", {
       followerAddress,
       tokenId,
     });
@@ -96,8 +103,8 @@ export const unfollowNFT = async (followerAddress, tokenId) => {
 // Function to get followed NFTs for a specific user
 export const getFollowedNFTs = async (followerAddress) => {
   try {
-    const response = await axios.get(
-      `${API_URL}/follows/follow/${followerAddress}`
+    const response = await axiosInstance.get(
+      `/follows/follow/${followerAddress}`
     );
     return response.data;
   } catch (error) {
@@ -109,8 +116,8 @@ export const getFollowedNFTs = async (followerAddress) => {
 // Chat APIs
 export const createChatMessage = async (tokenId, chatData) => {
   try {
-    const response = await axios.post(
-      `${API_URL}/chats/chat/${tokenId}`,
+    const response = await axiosInstance.post(
+      `/chats/chat/${tokenId}`,
       chatData
     );
     return response.data;
@@ -122,7 +129,7 @@ export const createChatMessage = async (tokenId, chatData) => {
 
 export const getChatMessages = async (tokenId) => {
   try {
-    const response = await axios.get(`${API_URL}/chats/chat/${tokenId}`);
+    const response = await axiosInstance.get(`/chats/chat/${tokenId}`);
     return response.data;
   } catch (error) {
     console.error("Error:", error);

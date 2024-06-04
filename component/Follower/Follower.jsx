@@ -50,7 +50,7 @@ const Follower = ({ nfts }) => {
     });
 
     const followsSet = new Set(follows.map((follow) => follow.tokenId));
-    console.log("Follower", followsSet);
+
     const nftsWithCounts = nfts.map((nft) => ({
       ...nft,
       likesCount: likesMap.get(nft.itemId) || 0,

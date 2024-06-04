@@ -2,6 +2,7 @@ import React, { useState, useContext } from "react";
 import { useRouter } from "next/router";
 import styles from "../styles/NFTUpload.module.css"; // Ensure correct path
 import NFTMarketplaceContext from "@/context/NFTMarketplace"; // Ensure correct path to context
+import { Loader } from "@/component";
 
 const NFTUploadPage = () => {
   const [title, setTitle] = useState("");
@@ -16,6 +17,8 @@ const NFTUploadPage = () => {
   const [availability, setAvailability] = useState("");
   const [termsAccepted, setTermsAccepted] = useState(false);
   const [errors, setErrors] = useState({});
+
+  const [loading, setLoading] = useState(false);
 
   const { createNFT } = useContext(NFTMarketplaceContext);
   const router = useRouter();
@@ -39,6 +42,7 @@ const NFTUploadPage = () => {
 
   const handleUpload = async () => {
     try {
+      setLoading(true);
       const formInput = {
         name: title,
         description,
@@ -50,6 +54,8 @@ const NFTUploadPage = () => {
       await createNFT(formInput, artworkFile, router);
     } catch (error) {
       console.error("Error uploading NFT:", error);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -156,6 +162,7 @@ const NFTUploadPage = () => {
                 <p className={styles.errorMessage}>{errors.tags}</p>
               )}
             </div>
+            {loading && <Loader />}
             <div className={styles.formGroup}>
               <label>Edition Size</label>
               <input

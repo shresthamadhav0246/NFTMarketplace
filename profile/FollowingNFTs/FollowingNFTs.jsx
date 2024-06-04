@@ -4,7 +4,7 @@ import styles from "./FollowingNFTs.module.css"; // Ensure to create or link app
 import Image from "next/image";
 import { AiOutlineMinusCircle } from "react-icons/ai"; // Icon for unfollowing
 
-const FollowingNFTs = ({ nfts, onUnfollow }) => {
+const FollowingNFTs = ({ nfts, onUnfollow, handleFollow }) => {
   if (!nfts.length) {
     return <div className={styles.empty}>No NFTs followed yet.</div>;
   }
@@ -21,11 +21,11 @@ const FollowingNFTs = ({ nfts, onUnfollow }) => {
             className={styles.nftImage}
           />
           <div className={styles.nftDetails}>
-            <h3 className={styles.nftTitle}>{nft.title}</h3>
+            <h3 className={styles.nftTitle}>{nft.name}</h3>
             <p className={styles.nftPrice}>{`Price: ${nft.price} ETH`}</p>
             <button
               className={styles.unfollowButton}
-              onClick={() => onUnfollow(nft.id)}
+              onClick={() => handleFollow(nft)}
             >
               <AiOutlineMinusCircle /> Unfollow
             </button>

@@ -2,7 +2,7 @@ import React, { useState, useEffect, useContext } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import logo from "../../img/logo1.png";
-import user1 from "../../img/user-1.png";
+import user1 from "../../img/user-icon.png";
 import { Button } from "../index";
 
 import { MdNotifications } from "react-icons/md";
@@ -13,6 +13,7 @@ import Style from "./NavBar.module.css";
 import { Discover, HelpCenter, Notification, Profile, SideBar } from "./index";
 
 import NFTMarketplaceContext from "@/context/NFTMarketplace";
+import { getUser } from "@/utils/api";
 
 const NavBar = () => {
   const [discover, setDiscover] = useState(false);
@@ -20,9 +21,12 @@ const NavBar = () => {
   const [notification, setNotification] = useState(false);
   const [profile, setProfile] = useState(false);
   const [openSideMenu, setOpenSideMenu] = useState(false);
+  const [user, setUser] = useState(null);
 
   // NFT smart contract section
   const { currentAccount, connectWallet } = useContext(NFTMarketplaceContext);
+
+  console.log("Current Account:", currentAccount);
 
   const openMenu = (e) => {
     const btnText = e.target.innerText;
@@ -67,7 +71,6 @@ const NavBar = () => {
   const openSideBar = () => {
     if (!openSideMenu) {
       setOpenSideMenu(true);
-      0;
     } else {
       setOpenSideMenu(false);
     }
@@ -90,6 +93,22 @@ const NavBar = () => {
     return () => window.removeEventListener("resize", handleResize);
   }, []);
 
+  useEffect(() => {
+    const fetchUserProfile = async () => {
+      try {
+        if (currentAccount) {
+          console.log("Fetching user profile for account:", currentAccount);
+          const response = await getUser(currentAccount);
+          setUser(response);
+        }
+      } catch (error) {
+        console.error("Error fetching user profile:", error);
+      }
+    };
+
+    fetchUserProfile();
+  }, [currentAccount]);
+
   return (
     <div className={Style.navbar}>
       <div className={Style.navbar_container}>
@@ -99,7 +118,7 @@ const NavBar = () => {
               <Image
                 src={logo}
                 alt="NFT Marketplace Logo"
-                wight={70}
+                width={70}
                 height={70}
               />
             </Link>
@@ -165,21 +184,23 @@ const NavBar = () => {
               </Link>
             </div>
           )}
-
-          <div className={Style.navbar_container_right_profile_box}>
-            <div className={Style.navbar_container_right_profile}>
-              <Image
-                src={user1}
-                alt="Profile"
-                width={40}
-                height={40}
-                onClick={() => openProfile()}
-                className={Style.navbar_container_right_profile}
-              />
-              {profile && <Profile currentAccount={currentAccount} />}
+          {currentAccount && (
+            <div className={Style.navbar_container_right_profile_box}>
+              <div className={Style.navbar_container_right_profile}>
+                <Image
+                  src={user?.profilePicture || user1}
+                  alt="Profile"
+                  width={40}
+                  height={40}
+                  onClick={() => openProfile()}
+                  className={Style.navbar_container_right_profile}
+                />
+                {profile && (
+                  <Profile currentAccount={currentAccount} user={user} />
+                )}
+              </div>
             </div>
-          </div>
-
+          )}
           {/** menu button for mobile device */}
           <div className={Style.navbar_container_right_menuBtn}>
             <CgMenuRight
@@ -191,7 +212,11 @@ const NavBar = () => {
       </div>
       {openSideMenu && (
         <div className={Style.SideBar}>
-          <SideBar setOpenSideMenu={setOpenSideMenu} />
+          <SideBar
+            setOpenSideMenu={setOpenSideMenu}
+            currentAccount={currentAccount}
+            connectWallet={connectWallet}
+          />
         </div>
       )}
     </div>

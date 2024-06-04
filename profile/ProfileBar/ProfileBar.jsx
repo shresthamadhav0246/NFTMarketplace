@@ -14,11 +14,13 @@ import { FollowingNFTs } from "..";
 
 const ProfileBar = ({
   ownedNFTs,
+  resell,
   createdNFTs,
   likedNFTs,
   onToggleLike,
   followingNFTs,
   onUnFollow,
+  handleFollow,
 }) => {
   const [collectibles, setCollectibles] = useState(true);
   const [created, setCreated] = useState(false);
@@ -78,15 +80,7 @@ const ProfileBar = ({
               <BsCalendar3 className={styles.collection_collections_btn_icon} />{" "}
               Created
             </button>
-            <button
-              onClick={openLiked}
-              className={liked ? styles.activeButton : ""}
-            >
-              <BsFillCalendarDateFill
-                className={styles.collection_collections_btn_icon}
-              />{" "}
-              Liked
-            </button>
+
             <button
               onClick={openFollowing}
               className={following ? styles.activeButton : ""}
@@ -110,15 +104,13 @@ const ProfileBar = ({
         </div>
       )}
 
-      {liked && (
-        <div className={styles.collection_box}>
-          <LikedNFTs nfts={likedNFTs} onToggleLike={onToggleLike} />
-        </div>
-      )}
-
       {following && (
         <div className={styles.collection_box}>
-          <FollowingNFTs nfts={followingNFTs} onUnfollow={onUnFollow} />
+          <FollowingNFTs
+            nfts={followingNFTs}
+            onUnfollow={onUnFollow}
+            handleFollow={handleFollow}
+          />
         </div>
       )}
     </div>

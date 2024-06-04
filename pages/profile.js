@@ -8,17 +8,33 @@ import img from "../img/collection-img3.jpg";
 import { ProfileBar } from "@/profile";
 import { useRouter } from "next/router";
 import NFTMarketplaceContext from "@/context/NFTMarketplace";
-import { getUser } from "@/utils/api";
+import { followNFT, getFollowedNFTs, getUser, unfollowNFT } from "@/utils/api";
 import AddProfile from "@/profile/AddProfile/AddProfile";
 
 function ProfilePage() {
-  const { currentAccount, fetchMyNFTs, fetchMyNFT, fetchItemsListed } =
-    useContext(NFTMarketplaceContext);
+  const { currentAccount, fetchMyNFTs, fetchNFTs } = useContext(
+    NFTMarketplaceContext
+  );
+  const [nfts, setNFTS] = useState([]);
   const [ownedNFTs, setOwnedNFTs] = useState([]);
   const [createdNFTs, setCreatedNFTs] = useState([]);
+  const [followingNFTs, setFollowingNFTs] = useState([]);
 
   const [user, setUser] = useState(null);
   const router = useRouter();
+
+  useEffect(() => {
+    const loadNFTs = async () => {
+      try {
+        const fetchedNFTs = await fetchNFTs();
+        setNFTS(fetchedNFTs);
+      } catch (error) {
+        console.error("Error fetching NFTs:", error);
+      }
+    };
+
+    loadNFTs();
+  }, [fetchNFTs]);
 
   useEffect(() => {
     fetchMyNFTs("listed").then((items) => {
@@ -52,47 +68,48 @@ function ProfilePage() {
     }
   }, [currentAccount]);
 
-  // if (!user) {
-  //   return <div>Loading...</div>;
-  // }
+  useEffect(() => {
+    const getData = async () => {
+      const follows = await getFollowedNFTs(currentAccount);
 
-  // const ownedNFTs = [
-  //   {
-  //     id: 1,
-  //     title: "Abstract Art #202",
-  //     price: "0.8",
-  //     image: img,
-  //   },
-  //   {
-  //     id: 2,
-  //     title: "Digital Landscape #119",
-  //     price: "1.2",
-  //     image: img,
-  //   },
-  //   {
-  //     id: 3,
-  //     title: "Virtual Reality Scene #12",
-  //     price: "0.5",
-  //     image: img,
-  //   },
-  //   {
-  //     id: 4,
-  //     title: "Cyberpunk Cityscape #401",
-  //     price: "2.5",
-  //     image: img,
-  //   },
-  // ];
+      categorizeNFTs(nfts, follows);
+    };
+    getData();
+  }, [currentAccount, nfts]);
 
-  // const createdNFTs = [
-  //   {
-  //     id: 1,
-  //     title: "NFT Art #1",
-  //     price: "0.5",
-  //     image: img,
-  //     creationDate: "2022-01-01",
-  //   },
-  //   // more NFTs
-  // ];
+  const categorizeNFTs = (nfts, follows) => {
+    const followsSet = new Set(follows.map((follow) => follow.tokenId));
+
+    const nftsWithCounts = nfts.map((nft) => ({
+      ...nft,
+      isFollowed: followsSet.has(nft.itemId.toString()),
+    }));
+
+    const following = nftsWithCounts.filter((nft) => nft.isFollowed); // NFTs from followed users
+
+    setFollowingNFTs(following);
+  };
+
+  const handleFollow = async (nft) => {
+    const originalFollowStatus = nft.isFollowed;
+
+    try {
+      if (nft.isFollowed) {
+        await unfollowNFT(currentAccount, nft.itemId);
+        nft.isFollowed = false;
+      } else {
+        await followNFT(currentAccount, nft.itemId);
+        nft.isFollowed = true;
+      }
+
+      // After the follow/unfollow operation, we need to update the follow status
+      const updatedFollows = await getFollowedNFTs(currentAccount);
+      categorizeNFTs(nfts, updatedFollows);
+    } catch (error) {
+      console.error("Error following/unfollowing NFT:", error);
+      nft.isFollowed = originalFollowStatus; // Revert on failure
+    }
+  };
 
   const [likedNFTs, setNfts] = useState([
     {
@@ -119,18 +136,9 @@ function ProfilePage() {
     );
   };
 
-  const [followingNFTs, setFollowingNFTs] = useState([
-    { id: 1, title: "NFT Art #1", price: "0.5", image: img },
-    // more NFTs
-  ]);
-
   const handleUnfollow = (id) => {
     setFollowingNFTs(nfts.filter((nft) => nft.id !== id));
   };
-
-  // console.log(user);
-  // const isProfileComplete =
-  //   user.username && user.email && user.bio && user.profileImage;
 
   return (
     <div className="profile-page">
@@ -142,6 +150,7 @@ function ProfilePage() {
         likedNFTs={likedNFTs}
         onToggleLike={handleToggleLike}
         followingNFTs={followingNFTs}
+        handleFollow={handleFollow}
         onUnfollow={handleUnfollow}
       />
     </div>

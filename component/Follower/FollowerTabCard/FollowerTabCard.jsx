@@ -16,11 +16,9 @@ const FollowerTabCard = ({ nft, onFollow }) => {
         <Image
           src={nft.image}
           alt={nft.name}
-          layout="responsive"
           width={500}
           height={300}
-          objectFit="cover"
-          className={styles.image}
+          className={styles.imageContainer_image}
         />
       </div>
       <div className={styles.info}>

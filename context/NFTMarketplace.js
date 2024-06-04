@@ -4,6 +4,7 @@ import Web3Modal from "web3modal";
 import axios from "axios";
 import { NFTMarketplaceAddress, NFTMarketplaceABI } from "./constant";
 import Router, { useRouter } from "next/router";
+import Error from "@/component/Error/Error";
 
 export const NFTMarketplaceContext = createContext();
 
@@ -23,7 +24,8 @@ const connectingWithSmartContract = async () => {
     const contract = fetchContract(signer);
     return contract;
   } catch (error) {
-    console.error("Error during connecting wallet:", error);
+    setError("Error during connecting wallet");
+    setOpenError(true);
   }
 };
 
@@ -41,6 +43,8 @@ export const NFTMarketplaceProvider = ({ children }) => {
         console.log("Contract:", contract);
       } else {
         console.error("No contract instance found");
+        setError("No contract instance found");
+        setOpenError(true);
       }
     } catch (error) {
       console.error("Error checking contract:", error);
@@ -67,6 +71,9 @@ export const NFTMarketplaceProvider = ({ children }) => {
         "Something went wrong while checking wallet connection:",
         error
       );
+
+      setError("Something went wrong while checking wallet connection");
+      setOpenError(true);
     }
   };
 
@@ -80,7 +87,8 @@ export const NFTMarketplaceProvider = ({ children }) => {
 
       console.log("Wallet disconnected");
     } catch (error) {
-      console.error("Error disconnecting wallet:", error);
+      setError("Error disconnecting wallet");
+      setOpenError(true);
     }
   };
 
@@ -125,6 +133,9 @@ export const NFTMarketplaceProvider = ({ children }) => {
       });
       return res.data.IpfsHash; // Return the CID of the image file
     } catch (error) {
+      setError("Error uploading to Pinata");
+      setOpenError(true);
+
       console.error("Error uploading to Pinata:", error);
       throw error;
     }
@@ -141,6 +152,8 @@ export const NFTMarketplaceProvider = ({ children }) => {
       });
       return res.data.IpfsHash; // Return the CID of the metadata JSON
     } catch (error) {
+      setError("rror uploading metadata to Pinata");
+      setOpenError(true);
       console.error("Error uploading metadata to Pinata:", error);
       throw error;
     }
@@ -178,6 +191,8 @@ export const NFTMarketplaceProvider = ({ children }) => {
       router.push("/");
     } catch (error) {
       console.error("Error creating NFT:", error);
+      setError("Error during creating NFT");
+      setOpenError(true);
     }
   };
 
@@ -191,13 +206,33 @@ export const NFTMarketplaceProvider = ({ children }) => {
         ? await contract.createToken(url, price, {
             value: listingPrice.toString(),
           })
-        : await contract.resellToken(url, price, {
+        : await contract.resellToken(id, price, {
             value: listingPrice,
           });
 
       await transaction.wait();
     } catch (error) {
       console.error("Error while creating sale:", error);
+      setError("Error while creating sale!");
+      setOpenError(true);
+    }
+  };
+
+  const resellToken = async (formInputPrice, id) => {
+    try {
+      const price = ethers.utils.parseUnits(formInputPrice, "ether");
+      const contract = await connectingWithSmartContract();
+
+      const listingPrice = await contract.getListingPrice();
+      const transaction = await contract.resellToken(id, price, {
+        value: listingPrice,
+      });
+
+      await transaction.wait();
+    } catch (error) {
+      setError("Error while reselling token!");
+      setOpenError(true);
+      console.error("Error while reselling token:", error);
     }
   };
 
@@ -254,11 +289,11 @@ export const NFTMarketplaceProvider = ({ children }) => {
 
       if (type == "created") {
         // Fetch NFTs created by the user
-        data = await contract.fetchItemsListed();
+        data = await contract.fetchItemsListed(currentAccount);
         console.log("Created NFTs" + data);
       } else if (type == "listed") {
         // Fetch NFTs listed by the user
-        data = await contract.fetchMyNFTs();
+        data = await contract.fetchMyNFTs(currentAccount);
         console.log("listed NFTs" + data);
       } else {
         throw new Error("Invalid type specified. Use 'created' or 'listed'.");
@@ -332,8 +367,12 @@ export const NFTMarketplaceProvider = ({ children }) => {
     } catch (error) {
       // Catch specific errors for better debugging
       if (error.error?.message) {
+        setError("Transaction error!");
+        setOpenError(true);
         console.error("Transaction error:", error.error.message);
       } else {
+        setError("Error buying NFT!");
+        setOpenError(true);
         console.error("Error buying NFT:", error);
       }
     }
@@ -348,10 +387,12 @@ export const NFTMarketplaceProvider = ({ children }) => {
         fetchNFTs,
         fetchMyNFTs,
         buyNFT,
+        resellToken,
         currentAccount,
         checkIfWalletConnected,
       }}
     >
+      {openError && <Error error={error} setOpenError={setOpenError} />}
       {children}
     </NFTMarketplaceContext.Provider>
   );

@@ -11,7 +11,9 @@ import {
   Collection,
   Follower,
   Footer,
+  Loader,
 } from "../component/index";
+
 import NFTMarketplaceContext from "@/context/NFTMarketplace"; // Ensure correct path
 
 export default function Home() {
@@ -58,13 +60,13 @@ export default function Home() {
       />
       <Filter />
 
-      <NFTCard nfts={nfts} />
+      {nfts.length == 0 ? <Loader /> : <NFTCard nfts={nfts} />}
 
       <Title
         heading="Filter by Collection"
         paragraph="Discover the most outstanding NFTs in all topics of life"
       />
-      {/* <Follower nfts={nfts} /> */}
+      <Follower nfts={nfts} />
       <Collection />
 
       <Title

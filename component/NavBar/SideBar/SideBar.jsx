@@ -4,6 +4,7 @@ import Link from "next/link";
 import { GrClose } from "react-icons/gr";
 import logo from "../../../img/logo1.png";
 import { Button } from "../../index";
+
 import {
   TiSocialFacebook,
   TiSocialLinkedin,
@@ -14,11 +15,17 @@ import {
   TiArrowSortedUp,
 } from "react-icons/ti";
 import styles from "./SideBar.module.css"; // Import the CSS module for the sidebar
+import { useRouter } from "next/router";
 
-const SideBar = ({ setOpenSideMenu }) => {
+const SideBar = ({ setOpenSideMenu, currentAccount, connectWallet }) => {
+  const router = useRouter();
   const [showDiscoverOptions, setShowDiscoverOptions] = useState(false);
   const [showHelpOptions, setShowHelpOptions] = useState(false);
 
+  const handleCreate = () => {
+    router.push("/NFT-upload");
+    setOpenSideMenu(false);
+  };
   return (
     <aside className={styles.sidebar}>
       <div className={styles.closeBtn}>
@@ -73,8 +80,14 @@ const SideBar = ({ setOpenSideMenu }) => {
       </div>
 
       <div className={styles.sideBar_button}>
-        <Button btnName="Create" handleClick={() => create} />
-        <Button btnName="Connect Wallet" handleClick={() => create} />
+        {!currentAccount ? (
+          <Button
+            btnName="Connect Wallet"
+            handleClick={() => connectWallet()}
+          />
+        ) : (
+          <Button btnName="Create" handleClick={() => handleCreate()} />
+        )}
       </div>
 
       <div className={styles.socialLinks}>

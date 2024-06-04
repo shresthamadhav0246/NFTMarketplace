@@ -11,6 +11,7 @@ import NFTCard from "./NFTCardComponent/NFTCard";
 import Collection from "./Collection/Collection";
 import Follower from "./Follower/Follower";
 import AudioPlayer from "./AudioPlayer/Audio";
+import Loader from "./Loader/Loader";
 
 export {
   Button,
@@ -26,4 +27,5 @@ export {
   Collection,
   Follower,
   AudioPlayer,
+  Loader,
 };

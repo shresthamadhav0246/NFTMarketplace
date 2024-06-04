@@ -5,7 +5,7 @@ import Image from "next/image";
 import img from "../../img/img.png";
 import { useRouter } from "next/router";
 
-const NFTCard = ({ nfts }) => {
+const NFTCard = ({ nfts = [] }) => {
   // State to store like status for each NFT card
   const [likes, setLikes] = useState(nfts.map(() => false));
 
