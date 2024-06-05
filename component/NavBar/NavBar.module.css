@@ -37,17 +37,17 @@
   .navbar_container_left_box_input_box {
     display: flex;
     align-items: center;
- 
+
     border-radius: 5px;
     padding: 5px 10px;
   }
   
-  .navbar_container_left_box_input input {
-    border: none;
-    background-color: transparent;
-   
-    padding: 8px 10px;
-    outline: none;
+  .input {
+    flex-grow: 1; /* Allow the input to take up as much space as possible */
+    padding: 8px 12px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    margin-right: 10px; /* Space between input and select */
   }
   
   .search_icon {

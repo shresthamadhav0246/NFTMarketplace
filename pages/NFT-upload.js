@@ -112,7 +112,6 @@ const NFTUploadPage = () => {
             <h2>Step 2: Enter Details</h2>
             <div className={styles.formGroup}>
               <label>Title</label>
-
               <input
                 type="text"
                 value={title}
@@ -121,7 +120,6 @@ const NFTUploadPage = () => {
                   errors.title ? styles.error : ""
                 }`}
               />
-
               {errors.title && (
                 <p className={styles.errorMessage}>{errors.title}</p>
               )}
@@ -141,14 +139,20 @@ const NFTUploadPage = () => {
             </div>
             <div className={styles.formGroup}>
               <label>Category</label>
-              <input
-                type="text"
+              <select
                 value={category}
                 onChange={(e) => setCategory(e.target.value)}
                 className={`${styles.input} ${
                   errors.category ? styles.error : ""
                 }`}
-              />
+              >
+                <option value="">Select a category</option>
+                <option value="Art">Art</option>
+                <option value="Collectibles">Collectibles</option>
+                <option value="Gaming">Gaming</option>
+                <option value="Music">Music</option>
+                <option value="Sports">Sports</option>
+              </select>
               {errors.category && (
                 <p className={styles.errorMessage}>{errors.category}</p>
               )}

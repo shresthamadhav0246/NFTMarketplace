@@ -1,6 +1,12 @@
 import React from "react";
 import { FaTwitter, FaFacebookF, FaLinkedinIn } from "react-icons/fa";
 import styles from "./SocaiMediaLinks.module.css"; // Ensure the correct path
+import styled from "styled-components";
+
+const Card = styled.div`
+  background-color: ${({ theme }) => theme.cardBg};
+  color: ${({ theme }) => theme.text};
+`;
 
 function SocialMediaLinks() {
   return (

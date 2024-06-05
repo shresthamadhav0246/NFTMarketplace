@@ -12,6 +12,7 @@ import Collection from "./Collection/Collection";
 import Follower from "./Follower/Follower";
 import AudioPlayer from "./AudioPlayer/Audio";
 import Loader from "./Loader/Loader";
+import LineSeparator from "./Separator/Separator";
 
 export {
   Button,
@@ -28,4 +29,5 @@ export {
   Follower,
   AudioPlayer,
   Loader,
+  LineSeparator,
 };

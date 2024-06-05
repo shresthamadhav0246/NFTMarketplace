@@ -17,6 +17,24 @@ import { Discover, HelpCenter, Notification, Profile, SideBar } from "./index";
 import NFTMarketplaceContext from "@/context/NFTMarketplace";
 import { getUser } from "@/utils/api";
 import styled from "styled-components";
+import { useRouter } from "next/router";
+
+const Header = styled.header`
+  background-color: ${({ theme }) => theme.body};
+  color: ${({ theme }) => theme.text};
+`;
+
+const Card = styled.div`
+  background-color: ${({ theme }) => theme.cardBg};
+  color: ${({ theme }) => theme.text};
+  border-radius: 8px;
+`;
+
+const Input = styled.input`
+  background-color: ${({ theme }) => theme.cardBg};
+  color: ${({ theme }) => theme.text};
+  border-radius: 8px;
+`;
 
 const NavBar = ({ toggleTheme, isDarkMode }) => {
   const [discover, setDiscover] = useState(false);
@@ -25,14 +43,12 @@ const NavBar = ({ toggleTheme, isDarkMode }) => {
   const [profile, setProfile] = useState(false);
   const [openSideMenu, setOpenSideMenu] = useState(false);
   const [user, setUser] = useState(null);
+  const router = useRouter();
 
   // NFT smart contract section
-  const { currentAccount, connectWallet } = useContext(NFTMarketplaceContext);
-
-  const Header = styled.header`
-    background-color: ${({ theme }) => theme.body};
-    color: ${({ theme }) => theme.text};
-  `;
+  const { currentAccount, connectWallet, disconnectWallet } = useContext(
+    NFTMarketplaceContext
+  );
 
   const openMenu = (e) => {
     const btnText = e.target.innerText;
@@ -115,19 +131,12 @@ const NavBar = ({ toggleTheme, isDarkMode }) => {
     fetchUserProfile();
   }, [currentAccount]);
 
-  const Input = styled.div`
-    background-color: ${({ theme }) => theme.cardBg};
-    color: ${({ theme }) => theme.text};
-    border-radius: 8px;
-  `;
+  const [searchQuery, setSearchQuery] = useState("");
 
-  const Card = styled.div`
-    background-color: ${({ theme }) => theme.cardBg};
-    color: ${({ theme }) => theme.text};
-    border-radius: 8px;
-  `;
+  const handleSearch = () => {
+    router.push(`/collection?search=${searchQuery}`);
+  };
 
-  console.log(toggleTheme);
   return (
     <Header>
       <Card>
@@ -145,15 +154,21 @@ const NavBar = ({ toggleTheme, isDarkMode }) => {
                 </Link>
               </div>
               <div className={Style.navbar_container_left_box_input}>
-                <Input>
-                  <div className={Style.navbar_container_left_box_input_box}>
-                    <input type="text" placeholder="Search NFT" />
-                    <BsSearch
-                      onClick={() => {}}
-                      className={Style.search_icon}
-                    />
-                  </div>
-                </Input>
+                <div className={Style.navbar_container_left_box_input_box}>
+                  <Input
+                    type="text"
+                    placeholder="Search NFTs..."
+                    onChange={(e) => setSearchQuery(e.target.value)}
+                    className={Style.input}
+                  ></Input>
+                  <BsSearch
+                    onClick={(e) => {
+                      e.preventDefault(); // Prevent the default behavior of the click event
+                      handleSearch();
+                    }}
+                    className={Style.search_icon}
+                  />
+                </div>
               </div>
             </div>
             <div className={Style.navbar_container_right}>
@@ -222,7 +237,11 @@ const NavBar = ({ toggleTheme, isDarkMode }) => {
                       className={Style.navbar_container_right_profile}
                     />
                     {profile && (
-                      <Profile currentAccount={currentAccount} user={user} />
+                      <Profile
+                        currentAccount={currentAccount}
+                        user={user}
+                        disconnectWallet={disconnectWallet}
+                      />
                     )}
                   </div>
                 </div>

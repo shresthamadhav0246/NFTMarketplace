@@ -2,6 +2,12 @@
 import React from "react";
 import styles from "./CreatedNFTs.module.css"; // Ensure the CSS file is appropriately named or reused
 import Image from "next/image";
+import styled from "styled-components";
+
+const Card = styled.div`
+  background-color: ${({ theme }) => theme.cardBg};
+  color: ${({ theme }) => theme.text};
+`;
 
 const CreatedNFTs = ({ nfts = [] }) => {
   if (!nfts.length) {
@@ -19,12 +25,13 @@ const CreatedNFTs = ({ nfts = [] }) => {
             alt={nft.title}
             className={styles.nftImage}
           />
-          <div className={styles.nftDetails}>
-            <h3 className={styles.nftTitle}>{nft.name}</h3>
-            <p className={styles.nftPrice}>{`Price: ${nft.price} ETH`}</p>
-            <p className={styles.nftExtra}>{`Created on: }`}</p> // Additional
-            info example
-          </div>
+          <Card>
+            <div className={styles.nftDetails}>
+              <h3 className={styles.nftTitle}>{nft.name}</h3>
+              <p className={styles.nftPrice}>{`Price: ${nft.price} ETH`}</p>
+              <p className={styles.nftExtra}>{`Created on: June 2024`}</p>
+            </div>
+          </Card>
         </div>
       ))}
     </div>

@@ -46,7 +46,7 @@ const NFTCard = ({ nfts = [] }) => {
           <div className={styles.NFTCard_box_img}>
             <Image
               src={nft.image || img}
-              alt="NFT Images"
+              alt={nft.name}
               width={600}
               height={300}
               className={styles.NFTCard_box_img_img}

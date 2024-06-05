@@ -17,8 +17,9 @@ import { MdVerified } from "react-icons/md";
 import { TiTick } from "react-icons/ti";
 import styled from "styled-components";
 
-const Filter = () => {
+const Filter = ({ handleCategoryChange = { handleCategoryChange } }) => {
   const [filter, setFilter] = useState(true);
+  const [collectibles, setCollectibles] = useState();
   const [image, setImage] = useState(true);
   const [video, setVideo] = useState(true);
   const [music, setMusic] = useState(true);
@@ -65,11 +66,18 @@ const Filter = () => {
       <div className={styles.filter}>
         <div className={styles.filter_box}>
           <div className={styles.filter_box_left}>
-            <button onClick={() => {}}>NFTs</button>
-            <button onClick={() => {}}>Arts</button>
-            <button onClick={() => {}}>Musics</button>
-            <button onClick={() => {}}>Sports</button>
-            <button onClick={() => {}}>Photography</button>
+            <button onClick={() => handleCategoryChange("")}>All</button>
+            <button onClick={() => handleCategoryChange("arts")}>Arts</button>
+            <button onClick={() => handleCategoryChange("collectibles")}>
+              Collectibles
+            </button>
+            <button onClick={() => handleCategoryChange("gaming")}>
+              Gaming
+            </button>
+            <button onClick={() => handleCategoryChange("sports")}>
+              Sports
+            </button>
+            <button onClick={() => handleCategoryChange("music")}>Music</button>
           </div>
 
           <div className={styles.filter_box_right}>

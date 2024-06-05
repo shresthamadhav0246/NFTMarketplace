@@ -6,17 +6,17 @@ const HelpCenter = () => {
   const helps = [
     {
       title: "Account Issues",
-      link: "/help/account-issues",
+      link: "/contact",
       description: "Troubleshoot issues related to your account.",
     },
     {
       title: "Payment Problems",
-      link: "/help/payment-problems",
+      link: "/contact",
       description: "Get help with failed or incomplete transactions.",
     },
     {
       title: "Usage Tips",
-      link: "/help/usage-tips",
+      link: "/contact",
       description: "Learn how to make the most out of our platform.",
     },
   ];

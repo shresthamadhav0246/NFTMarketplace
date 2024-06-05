@@ -11,34 +11,36 @@ import NFTMarketplaceContext from "@/context/NFTMarketplace";
 
 import styles from "./NFTDetails.module.css";
 import styled from "styled-components";
+import { Loader } from "@/component";
 
-const NFTDetails = ({ nft, artistDetails, buyNFT }) => {
+const Card = styled.div`
+  background-color: ${({ theme }) => theme.cardBg};
+  color: ${({ theme }) => theme.text};
+  border-radius: 8px;
+  font-size: 16px;
+
+  line-height: 1.6;
+  text-align: justify;
+  margin-top: 20px;
+
+  padding: 15px;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  width: 100%;
+`;
+const InfoCard = styled.div`
+  background-color: ${({ theme }) => theme.cardBg};
+  color: ${({ theme }) => theme.text};
+  border-radius: 8px;
+  margin-top: 10px;
+`;
+
+const NFTDetails = ({ nft, artistDetails, buyNFT, loading }) => {
   const artistSocialLinks = ["Facebook", "Twitter, Instragram"];
   const comments = ["It is good product", "I like it"];
   const shareOptions = ["It is good product", "I like it"];
   const { currentAccount } = useContext(NFTMarketplaceContext);
 
-  const Card = styled.div`
-    background-color: ${({ theme }) => theme.cardBg};
-    color: ${({ theme }) => theme.text};
-    border-radius: 8px;
-    font-size: 16px;
-
-    line-height: 1.6;
-    text-align: justify;
-    margin-top: 20px;
-
-    padding: 15px;
-    border-radius: 8px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    width: 100%;
-  `;
-  const InfoCard = styled.div`
-    background-color: ${({ theme }) => theme.cardBg};
-    color: ${({ theme }) => theme.text};
-    border-radius: 8px;
-    margin-top: 10px;
-  `;
   return (
     <div className={styles.nftDetailsContainer}>
       <div className={styles.leftColumn}>
@@ -66,6 +68,7 @@ const NFTDetails = ({ nft, artistDetails, buyNFT }) => {
             // socialLinks={artistSocialLinks}
           />
         </InfoCard>
+        {loading && <Loader />}
         <InfoCard>
           <PriceAndAvailability
             nft={nft}

@@ -12,6 +12,7 @@ import {
   Follower,
   Footer,
   Loader,
+  LineSeparator,
 } from "../component/index";
 
 import NFTMarketplaceContext from "@/context/NFTMarketplace"; // Ensure correct path
@@ -22,6 +23,24 @@ export default function Home() {
   );
   const [nfts, setNfts] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [selectedCategory, setSelectedCategory] = useState("");
+
+  const handleCategoryChange = (category) => {
+    setSelectedCategory(category);
+  };
+
+  const filteredNFTs = nfts.filter((nft) => {
+    // Filter by category (case-insensitive)
+    if (
+      selectedCategory &&
+      nft.category.toLowerCase() !== selectedCategory.toLowerCase()
+    ) {
+      return false;
+    }
+    return true;
+  });
+
+  console.log(selectedCategory, filteredNFTs);
 
   useEffect(() => {
     checkIfWalletConnected();
@@ -42,9 +61,7 @@ export default function Home() {
     loadNFTs();
   }, [fetchNFTs]);
 
-  const handleFollow = () => {
-    console.log("Follow button is clicked.");
-  };
+  console.log(nfts);
 
   return (
     <>
@@ -55,49 +72,31 @@ export default function Home() {
       <ServiceSection />
 
       <Title
-        heading="Featured NFTs"
-        paragraph="Discover the most outstanding NFTs in all topics of life"
+        heading="Explore NFTs"
+        paragraph="Browse through a diverse collection of NFTs across various categories"
       />
-      <Filter />
 
-      {nfts.length == 0 ? <Loader /> : <NFTCard nfts={nfts} />}
+      <Filter
+        selectedCategory={selectedCategory}
+        handleCategoryChange={handleCategoryChange}
+      />
+
+      {nfts.length == 0 ? <Loader /> : <NFTCard nfts={filteredNFTs} />}
 
       <Title
         heading="Filter by Collection"
         paragraph="Discover the most outstanding NFTs in all topics of life"
       />
       <Follower nfts={nfts} />
-      <Collection />
+      {/* <Collection /> */}
 
-      <Title
+      {/* <Title
         heading="Browse by category"
         paragraph="It's a category paragraph. user can get products by category"
       />
-      <Category />
+      <Category /> */}
+      <LineSeparator color="#d3d3d3" />
       <Subscribe />
-
-      {/* <div>
-        <h2>Owned NFTs</h2>
-        {ownedNFTs.map((nft) => (
-          <div key={nft.itemId}>
-            <img src={nft.image} alt={nft.name} />
-            <p>{nft.name}</p>
-            <p>{nft.description}</p>
-            <p>Price: {nft.price} ETH</p>
-          </div>
-        ))}
-      </div>
-      <div>
-        <h2>Created NFTs</h2>
-        {createdNFTs.map((nft) => (
-          <div key={nft.itemId}>
-            <img src={nft.image} alt={nft.name} />
-            <p>{nft.name}</p>
-            <p>{nft.description}</p>
-            <p>Price: {nft.price} ETH</p>
-          </div>
-        ))}
-      </div> */}
     </>
   );
 }

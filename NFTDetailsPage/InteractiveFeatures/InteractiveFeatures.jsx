@@ -1,6 +1,13 @@
 import React, { useEffect, useState } from "react";
 import styles from "./InteractiveFeatures.module.css";
 import { createChatMessage, getChatMessages } from "@/utils/api";
+import styled from "styled-components";
+
+const Input = styled.input`
+  background-color: ${({ theme }) => theme.cardBg};
+  color: ${({ theme }) => theme.text};
+  border-radius: 8px;
+`;
 
 const InteractiveFeatures = ({ tokenId, walletAddress, shareOptions }) => {
   const [chatMessages, setChatMessages] = useState([]);
@@ -79,7 +86,7 @@ const InteractiveFeatures = ({ tokenId, walletAddress, shareOptions }) => {
               </div>
             ))}
           </div>
-          <input
+          <Input
             type="text"
             placeholder="Type your message"
             className={styles.chatInput}

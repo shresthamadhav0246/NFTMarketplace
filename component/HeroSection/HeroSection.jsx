@@ -2,7 +2,7 @@ import React from "react";
 import Image from "next/image";
 import Link from "next/link";
 import styles from "./HeroSection.module.css"; // Ensure this CSS module exists
-import hero from "../../img/hero.jpg";
+import hero from "../../img/hero.png";
 import styled from "styled-components";
 const Hero = () => {
   const Hero = styled.header`
@@ -30,10 +30,10 @@ const Hero = () => {
             digital art from artists around the world.
           </p>
           <div className={styles.buttons}>
-            <Link href="/create-collection" className={styles.button}>
+            <Link href="/NFT-upload" className={styles.button}>
               Create Collection
             </Link>
-            <Link href="/explore" className={styles.button}>
+            <Link href="/collection" className={styles.button}>
               Explore Now
             </Link>
           </div>

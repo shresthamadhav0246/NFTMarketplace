@@ -263,6 +263,7 @@ export const NFTMarketplaceProvider = ({ children }) => {
               image: meta.data.image,
               name: meta.data.name,
               description: meta.data.description,
+              category: meta.data.category,
             };
             return item;
           } catch (error) {
@@ -318,6 +319,7 @@ export const NFTMarketplaceProvider = ({ children }) => {
               image: meta.data.image,
               name: meta.data.name,
               description: meta.data.description,
+              category: meta.data.category,
             };
             return item;
           } catch (error) {
@@ -390,6 +392,7 @@ export const NFTMarketplaceProvider = ({ children }) => {
         resellToken,
         currentAccount,
         checkIfWalletConnected,
+        disconnectWallet,
       }}
     >
       {openError && <Error error={error} setOpenError={setOpenError} />}

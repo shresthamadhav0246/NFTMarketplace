@@ -3,7 +3,12 @@ import styles from "./OwnedNFTs.module.css";
 import Image from "next/image";
 import NFTMarketplaceContext from "@/context/NFTMarketplace";
 import { useRouter } from "next/router";
+import styled from "styled-components";
 
+const Card = styled.div`
+  background-color: ${({ theme }) => theme.cardBg};
+  color: ${({ theme }) => theme.text};
+`;
 const OwnedNFTs = ({ nfts = [] }) => {
   const router = useRouter();
   const [showModal, setShowModal] = useState(false);
@@ -41,18 +46,20 @@ const OwnedNFTs = ({ nfts = [] }) => {
             alt={nft.title}
             className={styles.nftImage}
           />
-          <div className={styles.nftDetails}>
-            <h3 className={styles.nftTitle}>{nft.name}</h3>
-            <p className={styles.nftPrice}>{`Price: ${nft.price} ETH`}</p>
-          </div>
-          <div className={styles.nftResell}>
-            <button
-              className={styles.nftResell_button}
-              onClick={() => handleResellClick(nft)}
-            >
-              Resell
-            </button>
-          </div>
+          <Card>
+            <div className={styles.nftDetails}>
+              <h3 className={styles.nftTitle}>{nft.name}</h3>
+              <p className={styles.nftPrice}>{`Price: ${nft.price} ETH`}</p>
+            </div>
+            <div className={styles.nftResell}>
+              <button
+                className={styles.nftResell_button}
+                onClick={() => handleResellClick(nft)}
+              >
+                Resell
+              </button>
+            </div>
+          </Card>
         </div>
       ))}
       {showModal && (

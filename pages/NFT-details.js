@@ -12,6 +12,7 @@ const NFTDetails = () => {
   const [nft, setNft] = useState("");
   const [artistDetails, setArtistDetails] = useState("");
   const { buyNFT } = useContext(NFTMarketplaceContext);
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     if (data) {
@@ -28,6 +29,7 @@ const NFTDetails = () => {
         setArtistDetails(response);
       } catch (error) {
         console.error("Error fetching user profile:", error);
+      } finally {
       }
     };
 
@@ -36,7 +38,18 @@ const NFTDetails = () => {
     }
   }, [nft.seller]);
 
-  console.log(artistDetails);
+  const handleBuyNFT = async () => {
+    setLoading(true); // Set loading state to true before buyNFT function call
+    try {
+      await buyNFT(nft); // Assuming buyNFT function takes an NFT id as a parameter
+      // Transaction successful, perform any necessary actions
+    } catch (error) {
+      console.error("Error buying NFT:", error);
+      // Handle error case
+    } finally {
+      setLoading(false); // Reset loading state after transaction is complete
+    }
+  };
 
   if (!nft) {
     return <div>Loading...</div>;
@@ -84,7 +97,8 @@ const NFTDetails = () => {
       <NFTDetailsComponent
         nft={nft}
         artistDetails={artistDetails}
-        buyNFT={buyNFT}
+        buyNFT={handleBuyNFT}
+        loading={loading}
       />
     </div>
   );

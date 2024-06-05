@@ -8,7 +8,7 @@ import Link from "next/link";
 import styles from "./Profile.module.css";
 import user1 from "../../../img/user-icon.png";
 
-const Profile = ({ currentAccount, user }) => {
+const Profile = ({ currentAccount, user, disconnectWallet }) => {
   const userAddress = `${currentAccount.slice(0, 7)}....${currentAccount.slice(
     -5
   )}`;
@@ -55,7 +55,7 @@ const Profile = ({ currentAccount, user }) => {
           <div className={styles.profile_menu_one_item}>
             <FaUserEdit />
             <p>
-              <Link href={{ pathname: "/myprofile" }}>Edit Profile</Link>
+              <Link href={{ pathname: "/profile" }}>Edit Profile</Link>
             </p>
           </div>
         </div>
@@ -64,14 +64,16 @@ const Profile = ({ currentAccount, user }) => {
           <div className={styles.profile_menu_one_item}>
             <MdHelpCenter />
             <p>
-              <Link href={{ pathname: "/help" }}>Help</Link>
+              <Link href={{ pathname: "/contact" }}>Help</Link>
             </p>
           </div>
 
           <div className={styles.profile_menu_one_item}>
             <TbDownload />
             <p>
-              <Link href={{ pathname: "/disconnect" }}>Disconnect</Link>
+              <Link href="/" onClick={() => disconnectWallet()}>
+                Disconnect
+              </Link>
             </p>
           </div>
         </div>

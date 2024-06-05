@@ -3,6 +3,12 @@ import React from "react";
 import styles from "./FollowingNFTs.module.css"; // Ensure to create or link appropriate CSS
 import Image from "next/image";
 import { AiOutlineMinusCircle } from "react-icons/ai"; // Icon for unfollowing
+import styled from "styled-components";
+
+const Card = styled.div`
+  background-color: ${({ theme }) => theme.cardBg};
+  color: ${({ theme }) => theme.text};
+`;
 
 const FollowingNFTs = ({ nfts, onUnfollow, handleFollow }) => {
   if (!nfts.length) {
@@ -20,16 +26,18 @@ const FollowingNFTs = ({ nfts, onUnfollow, handleFollow }) => {
             alt={nft.title}
             className={styles.nftImage}
           />
-          <div className={styles.nftDetails}>
-            <h3 className={styles.nftTitle}>{nft.name}</h3>
-            <p className={styles.nftPrice}>{`Price: ${nft.price} ETH`}</p>
-            <button
-              className={styles.unfollowButton}
-              onClick={() => handleFollow(nft)}
-            >
-              <AiOutlineMinusCircle /> Unfollow
-            </button>
-          </div>
+          <Card>
+            <div className={styles.nftDetails}>
+              <h3 className={styles.nftTitle}>{nft.name}</h3>
+              <p className={styles.nftPrice}>{`Price: ${nft.price} ETH`}</p>
+              <button
+                className={styles.unfollowButton}
+                onClick={() => handleFollow(nft)}
+              >
+                <AiOutlineMinusCircle /> Unfollow
+              </button>
+            </div>
+          </Card>
         </div>
       ))}
     </div>
