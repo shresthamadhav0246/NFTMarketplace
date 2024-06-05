@@ -23,6 +23,7 @@ const UserProfile = ({ user }) => {
   if (isProfileIncomplete) {
     return <AddProfile />;
   }
+
   return (
     <div className={styles.profileContainer}>
       <div className={styles.profileImageContainer}>

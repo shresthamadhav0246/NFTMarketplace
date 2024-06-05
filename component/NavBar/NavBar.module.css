@@ -3,8 +3,8 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    background-color: #1a1a1a;
-    color: white;
+ 
+    
     padding: 10px 20px;
   }
   
@@ -29,11 +29,15 @@
   .navbar_container_left_box_input {
     position: relative;
   }
+  .switch{
+    margin-left: 5px;
+    padding-left: 5px;
+  }
   
   .navbar_container_left_box_input_box {
     display: flex;
     align-items: center;
-    background-color: #333;
+ 
     border-radius: 5px;
     padding: 5px 10px;
   }
@@ -41,7 +45,7 @@
   .navbar_container_left_box_input input {
     border: none;
     background-color: transparent;
-    color: white;
+   
     padding: 8px 10px;
     outline: none;
   }

@@ -4,22 +4,16 @@
     justify-content: center;
     align-items: center;
     padding: 20px;
-    background-color: #f4f4f4;
+  
   }
   
   .title_box {
-    text-align: start;
-    width: 100%;
-    max-width: 1200px;
-    padding: 20px;
-    background-color: #ffffff;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    border-radius: 10px;
+    
   }
   
   .title_box h2 {
     font-size: 2em; /* Larger font size for the heading */
-    color: #333;
+ 
     margin-bottom: 10px;
   }
   

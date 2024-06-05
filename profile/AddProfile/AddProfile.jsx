@@ -4,6 +4,7 @@ import styles from "./AddProfile.module.css";
 import { useRouter } from "next/router";
 import { createUser } from "@/utils/api";
 import NFTMarketplaceContext from "@/context/NFTMarketplace";
+import styled from "styled-components";
 
 const AddProfile = () => {
   const { currentAccount } = useContext(NFTMarketplaceContext);

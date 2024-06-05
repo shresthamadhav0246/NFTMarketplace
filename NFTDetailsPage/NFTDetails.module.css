@@ -28,16 +28,7 @@
   }
   
  .artworkDescription {
-    font-size: 16px; /* Suitable font size for readability */
-    color: #666; /* Subdued color for comfortable reading */
-    line-height: 1.6; /* Adequate line spacing for readability */
-    text-align: justify; /* Justify text for a clean look */
-    margin-top: 20px; /* Space between the image and text */
-    background-color: #fff; /* Optional: for a distinct backdrop */
-    padding: 15px;
-    border-radius: 8px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    width: 100%; /* Ensures it fills the column width */
+    
 }
   
   .relatedNFTsContainer {

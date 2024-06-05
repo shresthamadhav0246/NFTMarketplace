@@ -15,6 +15,7 @@ import {
 import { AiFillCloseCircle } from "react-icons/ai";
 import { MdVerified } from "react-icons/md";
 import { TiTick } from "react-icons/ti";
+import styled from "styled-components";
 
 const Filter = () => {
   const [filter, setFilter] = useState(true);
@@ -54,72 +55,79 @@ const Filter = () => {
     }
   };
 
+  const Filter = styled.header`
+    background-color: ${({ theme }) => theme.body};
+    color: ${({ theme }) => theme.text};
+  `;
+
   return (
-    <div className={styles.filter}>
-      <div className={styles.filter_box}>
-        <div className={styles.filter_box_left}>
-          <button onClick={() => {}}>NFTs</button>
-          <button onClick={() => {}}>Arts</button>
-          <button onClick={() => {}}>Musics</button>
-          <button onClick={() => {}}>Sports</button>
-          <button onClick={() => {}}>Photography</button>
-        </div>
+    <Filter>
+      <div className={styles.filter}>
+        <div className={styles.filter_box}>
+          <div className={styles.filter_box_left}>
+            <button onClick={() => {}}>NFTs</button>
+            <button onClick={() => {}}>Arts</button>
+            <button onClick={() => {}}>Musics</button>
+            <button onClick={() => {}}>Sports</button>
+            <button onClick={() => {}}>Photography</button>
+          </div>
 
-        <div className={styles.filter_box_right}>
-          <div
-            className={styles.filter_box_right_box}
-            onClick={() => openFilter()}
-          >
-            <FaFilter />
-            <span>Filter</span> {filter ? <FaAngleDown /> : <FaAngleUp />}
+          <div className={styles.filter_box_right}>
+            <div
+              className={styles.filter_box_right_box}
+              onClick={() => openFilter()}
+            >
+              <FaFilter />
+              <span>Filter</span> {filter ? <FaAngleDown /> : <FaAngleUp />}
+            </div>
           </div>
         </div>
+        {filter && (
+          <div className={styles.filter_box_items}>
+            <div className={styles.filter_box_items_box}>
+              <div className={styles.filter_box_items_box_item}>
+                <FaWallet /> <span>0.001 ETH - 10 ETH</span>
+                <AiFillCloseCircle />
+              </div>
+            </div>
+
+            <div className={styles.filter_box_items_box}>
+              <div
+                className={styles.filter_box_items_box_item_transection}
+                onClick={() => openImage()}
+              >
+                <FaImages /> <small>Images</small>
+                {image ? <AiFillCloseCircle /> : <TiTick />}
+              </div>
+            </div>
+
+            <div className={styles.filter_box_items_box}>
+              <div
+                className={styles.filter_box_items_box_item_transection}
+                onClick={() => openVideo()}
+              >
+                <FaVideo /> <small>Videos</small>
+                {video ? <AiFillCloseCircle /> : <TiTick />}
+              </div>
+            </div>
+            <div className={styles.filter_box_items_box}>
+              <div
+                className={styles.filter_box_items_box_item_transection}
+                onClick={() => openMusic()}
+              >
+                <FaMusic /> <small>Musics</small>
+                {music ? <AiFillCloseCircle /> : <TiTick />}
+              </div>
+            </div>
+
+            <div className={styles.filter_box_items_box}>
+              <FaUserAlt /> <span>Verified</span>
+              <MdVerified />
+            </div>
+          </div>
+        )}
       </div>
-      {filter && (
-        <div className={styles.filter_box_items}>
-          <div className={styles.filter_box_items_box}>
-            <div className={styles.filter_box_items_box_item}>
-              <FaWallet /> <span>0.001 ETH - 10 ETH</span>
-              <AiFillCloseCircle />
-            </div>
-          </div>
-
-          <div className={styles.filter_box_items_box}>
-            <div
-              className={styles.filter_box_items_box_item_transection}
-              onClick={() => openImage()}
-            >
-              <FaImages /> <small>Images</small>
-              {image ? <AiFillCloseCircle /> : <TiTick />}
-            </div>
-          </div>
-
-          <div className={styles.filter_box_items_box}>
-            <div
-              className={styles.filter_box_items_box_item_transection}
-              onClick={() => openVideo()}
-            >
-              <FaVideo /> <small>Videos</small>
-              {video ? <AiFillCloseCircle /> : <TiTick />}
-            </div>
-          </div>
-          <div className={styles.filter_box_items_box}>
-            <div
-              className={styles.filter_box_items_box_item_transection}
-              onClick={() => openMusic()}
-            >
-              <FaMusic /> <small>Musics</small>
-              {music ? <AiFillCloseCircle /> : <TiTick />}
-            </div>
-          </div>
-
-          <div className={styles.filter_box_items_box}>
-            <FaUserAlt /> <span>Verified</span>
-            <MdVerified />
-          </div>
-        </div>
-      )}
-    </div>
+    </Filter>
   );
 };
 

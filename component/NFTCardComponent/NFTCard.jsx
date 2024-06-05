@@ -4,6 +4,7 @@ import { AiFillHeart, AiOutlineHeart } from "react-icons/ai";
 import Image from "next/image";
 import img from "../../img/img.png";
 import { useRouter } from "next/router";
+import styled from "styled-components";
 
 const NFTCard = ({ nfts = [] }) => {
   // State to store like status for each NFT card
@@ -29,6 +30,11 @@ const NFTCard = ({ nfts = [] }) => {
     });
   };
 
+  const Card = styled.div`
+    background-color: ${({ theme }) => theme.cardBg};
+    color: ${({ theme }) => theme.text};
+  `;
+
   return (
     <div className={styles.NFTCard}>
       {nfts.map((nft, index) => (
@@ -46,53 +52,59 @@ const NFTCard = ({ nfts = [] }) => {
               className={styles.NFTCard_box_img_img}
             />
           </div>
-          <div className={styles.NFTCard_box_update_left}>
-            <div
-              className={styles.NFTCard_box_update_left_like}
-              onClick={(e) => {
-                e.stopPropagation(); // Prevents click event from bubbling to parent div
-                toggleLike(index);
-              }}
-            >
-              {likes[index] ? (
-                <AiFillHeart />
-              ) : (
-                <AiOutlineHeart
-                  className={styles.NFTCard_box_update_left_like_icon}
-                />
-              )}
-            </div>
-          </div>
-
-          <div className={styles.NFTCard_box_update_details}>
-            <div className={styles.NFTCard_box_update_details_price}>
-              <div className={styles.NFTCard_box_update_details_price_box}>
-                <h4>{nft.name}</h4>
-
-                <div
-                  className={styles.NFTCard_box_update_details_price_box_box}
-                >
-                  <div
-                    className={styles.NFTCard_box_update_details_price_box_bid}
-                  >
-                    <span className={styles.span}>
-                      {`Creator: ${nft.seller.slice(
-                        0,
-                        4
-                      )}....${nft.seller.slice(-4)}`}
-                    </span>
-                    <p>{"Price: " + nft.price + "ETH"}</p>
-                  </div>
-                  <div
-                    className={
-                      styles.NFTCard_box_update_details_price_box_stock
-                    }
-                  ></div>
-                </div>
+          <Card>
+            <div className={styles.NFTCard_box_update_left}>
+              <div
+                className={styles.NFTCard_box_update_left_like}
+                onClick={(e) => {
+                  e.stopPropagation(); // Prevents click event from bubbling to parent div
+                  toggleLike(index);
+                }}
+              >
+                {likes[index] ? (
+                  <AiFillHeart />
+                ) : (
+                  <AiOutlineHeart
+                    className={styles.NFTCard_box_update_left_like_icon}
+                  />
+                )}
               </div>
             </div>
-            <div className={styles.NFTCard_box_update_details_category}></div>
-          </div>
+          </Card>
+
+          <Card>
+            <div className={styles.NFTCard_box_update_details}>
+              <div className={styles.NFTCard_box_update_details_price}>
+                <div className={styles.NFTCard_box_update_details_price_box}>
+                  <h4>{nft.name}</h4>
+
+                  <div
+                    className={styles.NFTCard_box_update_details_price_box_box}
+                  >
+                    <div
+                      className={
+                        styles.NFTCard_box_update_details_price_box_bid
+                      }
+                    >
+                      <span className={styles.span}>
+                        {`Creator: ${nft.seller.slice(
+                          0,
+                          4
+                        )}....${nft.seller.slice(-4)}`}
+                      </span>
+                      <p>{"Price: " + nft.price + "ETH"}</p>
+                    </div>
+                    <div
+                      className={
+                        styles.NFTCard_box_update_details_price_box_stock
+                      }
+                    ></div>
+                  </div>
+                </div>
+              </div>
+              <div className={styles.NFTCard_box_update_details_category}></div>
+            </div>
+          </Card>
         </div>
       ))}
     </div>

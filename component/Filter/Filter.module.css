@@ -1,7 +1,7 @@
 /* Filter.module.css */
 .filter {
     padding: 20px;
-    background-color: #f4f4f4; /* Light grey background for the filter area */
+   
   }
   
   .filter_box {
@@ -21,7 +21,7 @@
   .filter_box_right div {
     margin-right: 15px;
     padding: 10px 20px;
-    background-color: white;
+    /* background-color: white; */
     border: 1px solid #ccc;
     border-radius: 5px;
     cursor: pointer;
@@ -31,7 +31,7 @@
   
   .filter_box_left button:hover,
   .filter_box_right div:hover {
-    background-color: #e0e0e0; /* Slight highlight on hover */
+    /* background-color: #e0e0e0; */
   }
   
   .filter_box_right_box {
@@ -52,7 +52,7 @@
   
   .filter_box_items_box {
     padding: 10px;
-    background-color: white;
+    /* background-color: white; */
     border-radius: 5px;
     display: flex;
     align-items: center;

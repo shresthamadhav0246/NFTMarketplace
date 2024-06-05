@@ -3,6 +3,7 @@ import { useRouter } from "next/router";
 import styles from "../styles/NFTUpload.module.css"; // Ensure correct path
 import NFTMarketplaceContext from "@/context/NFTMarketplace"; // Ensure correct path to context
 import { Loader } from "@/component";
+import styled from "styled-components";
 
 const NFTUploadPage = () => {
   const [title, setTitle] = useState("");
@@ -111,6 +112,7 @@ const NFTUploadPage = () => {
             <h2>Step 2: Enter Details</h2>
             <div className={styles.formGroup}>
               <label>Title</label>
+
               <input
                 type="text"
                 value={title}
@@ -119,6 +121,7 @@ const NFTUploadPage = () => {
                   errors.title ? styles.error : ""
                 }`}
               />
+
               {errors.title && (
                 <p className={styles.errorMessage}>{errors.title}</p>
               )}

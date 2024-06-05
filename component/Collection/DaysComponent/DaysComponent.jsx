@@ -7,6 +7,7 @@ import img3 from "../../../img/collection-img3.jpg";
 import img4 from "../../../img/collection-img4.jpg";
 import userProfileImage5 from "../../../img/user-1.png";
 import { MdVerified } from "react-icons/md";
+import styled from "styled-components";
 
 const DaysComponent = () => {
   // Placeholder paths for images, replace with actual image paths
@@ -19,6 +20,11 @@ const DaysComponent = () => {
   const handleShowMoreImages = () => {
     setShowAdditionalImages(!showAdditionalImages);
   };
+
+  const Card = styled.div`
+    background-color: ${({ theme }) => theme.cardBg};
+    color: ${({ theme }) => theme.text};
+  `;
 
   return (
     <div className={styles.daysComponent}>
@@ -51,24 +57,26 @@ const DaysComponent = () => {
           <div className={styles.plusSign}>+</div>
         </div>
       </div>
-      <div className={styles.info}>
-        <h4>Collection Title</h4>
-        <div className={styles.profile}>
-          <div className={styles.profileImage}>
-            <Image
-              src={userProfileImage}
-              alt="Profile"
-              layout="fill"
-              objectFit="cover"
-            />
-          </div>
+      <Card>
+        <div className={styles.info}>
+          <h4>Collection Title</h4>
+          <div className={styles.profile}>
+            <div className={styles.profileImage}>
+              <Image
+                src={userProfileImage}
+                alt="Profile"
+                layout="fill"
+                objectFit="cover"
+              />
+            </div>
 
-          <div className={styles.profileName}>
-            Madhab Shrestha <MdVerified className={styles.verifiedIcon} />
+            <div className={styles.profileName}>
+              Madhab Shrestha <MdVerified className={styles.verifiedIcon} />
+            </div>
           </div>
+          {/* <p>2.5 ETH</p> */}
         </div>
-        {/* <p>2.5 ETH</p> */}
-      </div>
+      </Card>
     </div>
   );
 };

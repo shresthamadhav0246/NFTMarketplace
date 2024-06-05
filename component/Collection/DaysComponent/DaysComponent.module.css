@@ -6,7 +6,7 @@
     border: 1px solid #ccc;
     border-radius: 8px;
     overflow: hidden;
-    background-color: #f0f0f0;
+   
   }
   
   .backgroundImage {
@@ -20,7 +20,7 @@
     display: flex;
     justify-content: space-around;
     padding: 5px;
-    background-color: #ffffff;
+   
   }
   
   .smallImage {
@@ -86,7 +86,7 @@
 
     padding: 20px 10px 10px 10px;
     
-    color: #333;
+ 
     font-size: 1.2em;
     display: flex;
     align-items: start;

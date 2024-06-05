@@ -4,6 +4,8 @@ import Link from "next/link";
 import logo from "../../img/logo1.png";
 import user1 from "../../img/user-icon.png";
 import { Button } from "../index";
+import { useTheme } from "styled-components";
+import ThemeToggle from "../Switch/ThemeToggle";
 
 import { MdNotifications } from "react-icons/md";
 import { BsSearch } from "react-icons/bs";
@@ -14,8 +16,9 @@ import { Discover, HelpCenter, Notification, Profile, SideBar } from "./index";
 
 import NFTMarketplaceContext from "@/context/NFTMarketplace";
 import { getUser } from "@/utils/api";
+import styled from "styled-components";
 
-const NavBar = () => {
+const NavBar = ({ toggleTheme, isDarkMode }) => {
   const [discover, setDiscover] = useState(false);
   const [help, setHelp] = useState(false);
   const [notification, setNotification] = useState(false);
@@ -26,7 +29,10 @@ const NavBar = () => {
   // NFT smart contract section
   const { currentAccount, connectWallet } = useContext(NFTMarketplaceContext);
 
-  console.log("Current Account:", currentAccount);
+  const Header = styled.header`
+    background-color: ${({ theme }) => theme.body};
+    color: ${({ theme }) => theme.text};
+  `;
 
   const openMenu = (e) => {
     const btnText = e.target.innerText;
@@ -109,117 +115,146 @@ const NavBar = () => {
     fetchUserProfile();
   }, [currentAccount]);
 
+  const Input = styled.div`
+    background-color: ${({ theme }) => theme.cardBg};
+    color: ${({ theme }) => theme.text};
+    border-radius: 8px;
+  `;
+
+  const Card = styled.div`
+    background-color: ${({ theme }) => theme.cardBg};
+    color: ${({ theme }) => theme.text};
+    border-radius: 8px;
+  `;
+
+  console.log(toggleTheme);
   return (
-    <div className={Style.navbar}>
-      <div className={Style.navbar_container}>
-        <div className={Style.navbar_container_left}>
-          <div className={Style.logo}>
-            <Link href={{ pathname: "/" }}>
-              <Image
-                src={logo}
-                alt="NFT Marketplace Logo"
-                width={70}
-                height={70}
-              />
-            </Link>
-          </div>
-          <div className={Style.navbar_container_left_box_input}>
-            <div className={Style.navbar_container_left_box_input_box}>
-              <input type="text" placeholder="Search NFT" />
-              <BsSearch onClick={() => {}} className={Style.search_icon} />
-            </div>
-          </div>
-        </div>
-        <div className={Style.navbar_container_right}>
-          <div className={Style.navbar_container_right_discover}>
-            <p
-              onClick={(e) => {
-                openMenu(e);
-              }}
-            >
-              Discover
-            </p>
-            {discover && (
-              <div className={Style.navbar_container_right_discover_box}>
-                <Discover />
+    <Header>
+      <Card>
+        <div className={Style.navbar}>
+          <div className={Style.navbar_container}>
+            <div className={Style.navbar_container_left}>
+              <div className={Style.logo}>
+                <Link href={{ pathname: "/" }}>
+                  <Image
+                    src={logo}
+                    alt="NFT Marketplace Logo"
+                    width={70}
+                    height={70}
+                  />
+                </Link>
               </div>
-            )}
-          </div>
-
-          <div className={Style.navbar_container_right_help}>
-            <p
-              onClick={(e) => {
-                openMenu(e);
-              }}
-            >
-              Help Center
-            </p>
-            {help && (
-              <div className={Style.navbar_container_right_help_box}>
-                <HelpCenter />
+              <div className={Style.navbar_container_left_box_input}>
+                <Input>
+                  <div className={Style.navbar_container_left_box_input_box}>
+                    <input type="text" placeholder="Search NFT" />
+                    <BsSearch
+                      onClick={() => {}}
+                      className={Style.search_icon}
+                    />
+                  </div>
+                </Input>
               </div>
-            )}
-          </div>
-          {/* Notification */}
-          <div className={Style.navbar_container_right_notify}>
-            <MdNotifications
-              className={Style.notification}
-              onClick={() => openNotification()}
-            />
-            {notification && <Notification />}
-          </div>
-
-          {currentAccount == null ? (
-            <div className={Style.navbar_container_right_button}>
-              <Button
-                btnName="Connect Wallet"
-                handleClick={() => connectWallet()}
-              />
             </div>
-          ) : (
-            <div className={Style.navbar_container_right_button}>
-              <Link href={{ pathname: "/NFT-upload" }}>
-                {" "}
-                <Button btnName="Create" />
-              </Link>
-            </div>
-          )}
-          {currentAccount && (
-            <div className={Style.navbar_container_right_profile_box}>
-              <div className={Style.navbar_container_right_profile}>
-                <Image
-                  src={user?.profilePicture || user1}
-                  alt="Profile"
-                  width={40}
-                  height={40}
-                  onClick={() => openProfile()}
-                  className={Style.navbar_container_right_profile}
-                />
-                {profile && (
-                  <Profile currentAccount={currentAccount} user={user} />
+            <div className={Style.navbar_container_right}>
+              <div className={Style.navbar_container_right_discover}>
+                <p
+                  onClick={(e) => {
+                    openMenu(e);
+                  }}
+                >
+                  Discover
+                </p>
+                {discover && (
+                  <div className={Style.navbar_container_right_discover_box}>
+                    <Discover />
+                  </div>
                 )}
               </div>
+
+              <div className={Style.navbar_container_right_help}>
+                <p
+                  onClick={(e) => {
+                    openMenu(e);
+                  }}
+                >
+                  Help Center
+                </p>
+                {help && (
+                  <div className={Style.navbar_container_right_help_box}>
+                    <HelpCenter />
+                  </div>
+                )}
+              </div>
+              {/* Notification */}
+              <div className={Style.navbar_container_right_notify}>
+                <MdNotifications
+                  className={Style.notification}
+                  onClick={() => openNotification()}
+                />
+                {notification && <Notification />}
+              </div>
+
+              {currentAccount == null ? (
+                <div className={Style.navbar_container_right_button}>
+                  <Button
+                    btnName="Connect Wallet"
+                    handleClick={() => connectWallet()}
+                  />
+                </div>
+              ) : (
+                <div className={Style.navbar_container_right_button}>
+                  <Link href={{ pathname: "/NFT-upload" }}>
+                    {" "}
+                    <Button btnName="Create" />
+                  </Link>
+                </div>
+              )}
+              {currentAccount && (
+                <div className={Style.navbar_container_right_profile_box}>
+                  <div className={Style.navbar_container_right_profile}>
+                    <Image
+                      src={user?.profilePicture || user1}
+                      alt="Profile"
+                      width={40}
+                      height={40}
+                      onClick={() => openProfile()}
+                      className={Style.navbar_container_right_profile}
+                    />
+                    {profile && (
+                      <Profile currentAccount={currentAccount} user={user} />
+                    )}
+                  </div>
+                </div>
+              )}
+
+              <div className={Style.switch}>
+                <ThemeToggle
+                  toggleTheme={toggleTheme}
+                  isDarkMode={isDarkMode}
+                />
+              </div>
+              {/** menu button for mobile device */}
+              <div className={Style.navbar_container_right_menuBtn}>
+                <CgMenuRight
+                  className={Style.menuIcon}
+                  onClick={() => openSideBar()}
+                />
+              </div>
+            </div>
+          </div>
+          {openSideMenu && (
+            <div className={Style.SideBar}>
+              <SideBar
+                setOpenSideMenu={setOpenSideMenu}
+                currentAccount={currentAccount}
+                connectWallet={connectWallet}
+              />
             </div>
           )}
-          {/** menu button for mobile device */}
-          <div className={Style.navbar_container_right_menuBtn}>
-            <CgMenuRight
-              className={Style.menuIcon}
-              onClick={() => openSideBar()}
-            />
-          </div>
         </div>
-      </div>
-      {openSideMenu && (
-        <div className={Style.SideBar}>
-          <SideBar
-            setOpenSideMenu={setOpenSideMenu}
-            currentAccount={currentAccount}
-            connectWallet={connectWallet}
-          />
-        </div>
-      )}
-    </div>
+      </Card>
+    </Header>
   );
 };
 
